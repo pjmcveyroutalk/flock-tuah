@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>FLOCK TUAH | $FLOCKTUAH</title>
+  <meta
+    name="description"
+    content="FLOCK TUAH. Spy on that thang. The flock is always watching."
+  />
+
+  <meta property="og:title" content="FLOCK TUAH | $FLOCKTUAH" />
+  <meta
+    property="og:description"
+    content="Gotta give 'em that FLOCK TUAH and spy on that thang."
+  />
+  <meta property="og:image" content="/flock-tuah.png" />
+
+  <style>
+    :root {
+      --bg: #070707;
+      --panel: #111;
+      --panel-2: #171717;
+      --text: #fff;
+      --muted: #aaa;
+      --pink: #ff2c98;
+      --line: #343434;
+      --green: #64ff8c;
+      --yellow: #ffe66d;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+        var(--bg);
+      background-size: 32px 32px;
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 28px));
+      margin: auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7,7,7,.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand-mini {
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: 20px;
+      letter-spacing: .5px;
+    }
+
+    .brand-mini span {
+      color: var(--pink);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 44px 0 26px;
+    }
+
+    .eyebrow {
+      color: var(--pink);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 2.5px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(58px, 17vw, 150px);
+      line-height: .86;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      text-shadow: 5px 5px 0 #000;
+    }
+
+    .ticker {
+      margin: 14px 0 6px;
+      color: var(--pink);
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(25px, 7vw, 50px);
+    }
+
+    .tagline {
+      margin: 0 auto 24px;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(28px, 8vw, 64px);
+      line-height: .95;
+      text-transform: uppercase;
+    }
+
+    .hero-art {
+      width: min(720px, 100%);
+      display: block;
+      margin: 24px auto;
+      border: 3px solid white;
+      border-radius: 18px;
+      box-shadow: 10px 10px 0 var(--pink);
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 26px;
+    }
+
+    .btn {
+      min-height: 50px;
+      padding: 0 22px;
+      border: 2px solid white;
+      background: white;
+      color: #000;
+      font-weight: 1000;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 4px 4px 0 var(--pink);
+    }
+
+    .btn.alt {
+      color: white;
+      background: transparent;
+    }
+
+    .btn.disabled {
+      opacity: .55;
+      cursor: default;
+    }
+
+    .surveillance {
+      margin: 28px 0 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: #0c0c0c;
+    }
+
+    .surveillance-inner {
+      padding: 14px 0;
+    }
+
+    .rec {
+      color: var(--pink);
+      font-weight: 1000;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      background: #101010;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--green);
+      margin-top: 4px;
+    }
+
+    section {
+      padding: 72px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-label {
+      color: var(--pink);
+      font-size: 11px;
+      font-weight: 1000;
+      letter-spacing: 2px;
+      margin-bottom: 7px;
+    }
+
+    h2 {
+      margin: 0 0 20px;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(42px, 11vw, 90px);
+      line-height: .92;
+      text-transform: uppercase;
+    }
+
+    .lead {
+      max-width: 700px;
+      font-size: clamp(20px, 4vw, 28px);
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .pink {
+      color: var(--pink);
+    }
+
+    .case-file {
+      border: 2px solid #ddd;
+      background: #efefdf;
+      color: #111;
+      padding: 22px;
+      max-width: 720px;
+      box-shadow: 10px 10px 0 #333;
+    }
+
+    .case-title {
+      border-bottom: 3px solid #111;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+      font-family: "Courier New", monospace;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .case-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px dotted #777;
+      font-family: "Courier New", monospace;
+      font-size: 14px;
+    }
+
+    .stamp {
+      display: inline-block;
+      margin-top: 24px;
+      border: 5px solid #d40000;
+      color: #d40000;
+      padding: 8px 15px;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(30px, 7vw, 54px);
+      transform: rotate(-5deg);
+    }
+
+    .roadmap {
+      display: grid;
+      gap: 12px;
+    }
+
+    .road-item {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 20px;
+    }
+
+    .road-number {
+      color: var(--pink);
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: 32px;
+    }
+
+    .road-item h3 {
+      margin: 2px 0 5px;
+      font-size: 22px;
+      text-transform: uppercase;
+    }
+
+    .road-item p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .how {
+      display: grid;
+      gap: 10px;
+      counter-reset: flock;
+    }
+
+    .how-step {
+      counter-increment: flock;
+      border: 1px solid var(--line);
+      padding: 18px;
+      background: var(--panel);
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .how-step::before {
+      content: "0" counter(flock);
+      color: var(--pink);
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: 30px;
+    }
+
+    .records {
+      border: 1px solid var(--line);
+      background: #0d0d0d;
+      padding: 18px;
+      font-family: monospace;
+    }
+
+    .record {
+      display: grid;
+      grid-template-columns: 145px 1fr;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px dotted #333;
+    }
+
+    .record:last-child {
+      border-bottom: 0;
+    }
+
+    .record-key {
+      color: var(--muted);
+    }
+
+    .record-value {
+      overflow-wrap: anywhere;
+      font-weight: 700;
+    }
+
+    .warning {
+      margin-top: 20px;
+      border-left: 5px solid var(--yellow);
+      padding: 14px 16px;
+      background: #17150c;
+      line-height: 1.5;
+    }
+
+    .socials {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .social {
+      border: 2px solid white;
+      padding: 14px 18px;
+      font-weight: 1000;
+      text-transform: uppercase;
+    }
+
+    footer {
+      text-align: center;
+      padding: 45px 0 60px;
+      color: var(--muted);
+    }
+
+    .footer-watch {
+      color: white;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .disclaimer {
+      max-width: 720px;
+      margin: 24px auto 0;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (min-width: 760px) {
+      .stats {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .roadmap {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .how {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero {
+        padding-top: 70px;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .nav-links a:nth-child(1) {
+        display: none;
+      }
+
+      .nav-links {
+        gap: 11px;
+      }
+
+      .case-row,
+      .record {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand-mini" href="#">
+        FLOCK <span>TUAH</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#what">THE MEME</a>
+        <a href="#records">PUBLIC RECORDS</a>
+        <a href="#flock">THE FLOCK</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <div class="eyebrow">THE FLOCK IS ALWAYS WATCHING</div>
+
+      <h1>FLOCK<br>TUAH</h1>
+
+      <div class="ticker">$FLOCKTUAH</div>
+
+      <div class="tagline">
+        SPY ON<br>
+        <span class="pink">THAT THANG.</span>
+      </div>
+
+      <img
+        src="/flock-tuah.png"
+        alt="Flock Tuah surveillance camera meme"
+        class="hero-art"
+      />
+
+      <div class="buttons">
+        <a id="buyButton" class="btn disabled">COMING SOON</a>
+        <button id="copyButton" class="btn alt" style="display:none;">
+          COPY CONTRACT
+        </button>
+      </div>
+    </div>
+
+    <div class="surveillance">
+      <div class="wrap surveillance-inner">
+        <div class="rec">● REC — FLOCK SURVEILLANCE NETWORK</div>
+
+        <div class="stats">
+          <div class="stat">
+            STATUS
+            <strong>WATCHING</strong>
+          </div>
+
+          <div class="stat">
+            CHAIN
+            <strong>SOLANA</strong>
+          </div>
+
+          <div class="stat">
+            PROJECT TAX
+            <strong>0%</strong>
+          </div>
+
+          <div class="stat">
+            CASE
+            <strong id="caseStatus">PRE-LAUNCH</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section id="what">
+      <div class="wrap">
+        <div class="section-label">CASE INTRODUCTION</div>
+        <h2>WHAT THE<br>FLOCK?</h2>
+
+        <p class="lead">
+          Somebody had to
+          <span class="pink">spy on that thang.</span>
+        </p>
+
+        <p class="lead">
+          FLOCK TUAH is a Solana meme token with one very important
+          assignment: <strong>WATCH EVERYTHING.</strong>
+        </p>
+
+        <p class="lead">
+          No revolutionary blockchain technology.
+          No 47-page whitepaper.
+          Just the flock doing what the flock does.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-label">DEPARTMENT OF MEMECOIN AFFAIRS</div>
+        <h2>OFFICIAL<br>CASE FILE</h2>
+
+        <div class="case-file">
+          <div class="case-title">
+            DEPARTMENT OF MEMECOIN AFFAIRS
+          </div>
+
+          <div class="case-row">
+            <strong>APPLICANT</strong>
+            <span>FLOCK TUAH</span>
+          </div>
+
+          <div class="case-row">
+            <strong>TICKER</strong>
+            <span>$FLOCKTUAH</span>
+          </div>
+
+          <div class="case-row">
+            <strong>CHAIN</strong>
+            <span>SOLANA</span>
+          </div>
+
+          <div class="case-row">
+            <strong>PURPOSE</strong>
+            <span>SPY ON THAT THANG</span>
+          </div>
+
+          <div class="case-row">
+            <strong>STATUS</strong>
+            <span>UNDER REVIEW</span>
+          </div>
+
+          <div class="stamp">APPROVED FOR FLOCKING</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-label">REQUEST FOR STRATEGIC PLAN</div>
+        <h2>OFFICIAL<br>ROADMAP</h2>
+
+        <div class="roadmap">
+          <div class="road-item">
+            <div class="road-number">01</div>
+            <h3>Flock</h3>
+            <p>Show up.</p>
+          </div>
+
+          <div class="road-item">
+            <div class="road-number">02</div>
+            <h3>Spy on that thang</h3>
+            <p>Self-explanatory.</p>
+          </div>
+
+          <div class="road-item">
+            <div class="road-number">03</div>
+            <h3>Graduate</h3>
+            <p>Escape the bonding curve.</p>
+          </div>
+
+          <div class="road-item">
+            <div class="road-number">04</div>
+            <h3>Keep flocking</h3>
+            <p>Further instructions pending.</p>
+          </div>
+        </div>
+
+        <div class="stamp">ROADMAP REQUEST: DENIED</div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-label">OPERATING INSTRUCTIONS</div>
+        <h2>HOW TO<br>FLOCK</h2>
+
+        <div id="preLaunchInstructions" class="warning">
+          <strong>CASE NOT YET OPEN.</strong><br>
+          $FLOCKTUAH has not launched yet. Do not buy tokens claiming to
+          be FLOCK TUAH before the official mint is published here.
+        </div>
+
+        <div id="liveInstructions" class="how" style="display:none;">
+          <div class="how-step">Get SOL.</div>
+          <div class="how-step">
+            Visit the official FLOCK TUAH Pump.fun page linked here.
+          </div>
+          <div class="how-step">
+            Verify the mint address against flocktuah.com.
+          </div>
+          <div class="how-step">
+            Swap only what you're willing to risk.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="records">
+      <div class="wrap">
+        <div class="section-label">OPEN RECORDS REQUEST GRANTED</div>
+        <h2>PUBLIC<br>RECORDS</h2>
+
+        <div class="records">
+          <div class="record">
+            <span class="record-key">NAME</span>
+            <span class="record-value">FLOCK TUAH</span>
+          </div>
+
+          <div class="record">
+            <span class="record-key">TICKER</span>
+            <span class="record-value">$FLOCKTUAH</span>
+          </div>
+
+          <div class="record">
+            <span class="record-key">CHAIN</span>
+            <span class="record-value">SOLANA</span>
+          </div>
+
+          <div class="record">
+            <span class="record-key">LAUNCH</span>
+            <span class="record-value">PUMP.FUN</span>
+          </div>
+
+          <div class="record">
+            <span class="record-key">PROJECT TRANSFER TAX</span>
+            <span class="record-value">0%</span>
+          </div>
+
+          <div class="record">
+            <span class="record-key">MINT</span>
+            <span id="mintAddress" class="record-value">
+              NOT CREATED
+            </span>
+          </div>
+
+          <div class="record">
+            <span class="record-key">STATUS</span>
+            <span id="publicStatus" class="record-value">
+              PRE-LAUNCH
+            </span>
+          </div>
+        </div>
+
+        <div class="warning">
+          <strong>VERIFY BEFORE YOU FLOCK.</strong><br><br>
+          Token names and ticker symbols can be copied. After launch,
+          the Solana mint address published on
+          <strong>flocktuah.com</strong> will identify the official
+          FLOCK TUAH token.
+        </div>
+      </div>
+    </section>
+
+    <section id="flock">
+      <div class="wrap">
+        <div class="section-label">AUTHORIZED COMMUNICATION CHANNELS</div>
+        <h2>JOIN THE<br>FLOCK</h2>
+
+        <div id="socialLinks" class="socials"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-watch">● THE FLOCK IS STILL WATCHING.</div>
+      <div>FLOCKTUAH.COM</div>
+
+      <p class="disclaimer">
+        FLOCK TUAH is a meme token. Crypto assets are highly speculative
+        and can lose substantial or all of their value. Nothing on this
+        website guarantees returns or constitutes financial advice.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    /*
+      ============================================================
+      FLOCK TUAH SITE CONTROL PANEL
+      ============================================================
+
+      This is the ONLY section you should need to edit after launch.
+    */
+
+    const SITE_CONFIG = {
+      status: "PRE-LAUNCH", // PRE-LAUNCH | BONDING | GRADUATED
+
+      mintAddress: "",
+
+      pumpUrl: "",
+
+      xUrl: "",
+
+      telegramUrl: ""
+    };
+
+    /*
+      ============================================================
+      Site behavior
+      ============================================================
+    */
+
+    const buyButton = document.getElementById("buyButton");
+    const copyButton = document.getElementById("copyButton");
+    const mintAddress = document.getElementById("mintAddress");
+    const caseStatus = document.getElementById("caseStatus");
+    const publicStatus = document.getElementById("publicStatus");
+    const preLaunch = document.getElementById("preLaunchInstructions");
+    const liveInstructions = document.getElementById("liveInstructions");
+    const socialLinks = document.getElementById("socialLinks");
+
+    caseStatus.textContent = SITE_CONFIG.status;
+    publicStatus.textContent = SITE_CONFIG.status;
+
+    if (SITE_CONFIG.mintAddress) {
+      mintAddress.textContent = SITE_CONFIG.mintAddress;
+      copyButton.style.display = "inline-block";
+
+      copyButton.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(SITE_CONFIG.mintAddress);
+
+        const oldText = copyButton.textContent;
+        copyButton.textContent = "COPIED";
+        setTimeout(() => {
+          copyButton.textContent = oldText;
+        }, 1400);
+      });
+    }
+
+    if (SITE_CONFIG.pumpUrl) {
+      buyButton.textContent = "BUY $FLOCKTUAH";
+      buyButton.href = SITE_CONFIG.pumpUrl;
+      buyButton.target = "_blank";
+      buyButton.rel = "noopener noreferrer";
+      buyButton.classList.remove("disabled");
+
+      preLaunch.style.display = "none";
+      liveInstructions.style.display = "grid";
+    }
+
+    const socials = [
+      ["X / TWITTER", SITE_CONFIG.xUrl],
+      ["TELEGRAM", SITE_CONFIG.telegramUrl],
+      ["PUMP.FUN", SITE_CONFIG.pumpUrl]
+    ];
+
+    socials.forEach(([label, url]) => {
+      if (!url) return;
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.className = "social";
+      a.textContent = label;
+
+      socialLinks.appendChild(a);
+    });
+
+    if (!socialLinks.children.length) {
+      socialLinks.innerHTML =
+        '<span style="color:#aaa;font-weight:700;">OFFICIAL CHANNELS PENDING.</span>';
+    }
+  </script>
+</body>
+</html>
