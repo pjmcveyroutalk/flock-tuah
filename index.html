@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
   <title>FLOCK TUAH | $FLOCKTUAH</title>
+
   <meta
     name="description"
     content="FLOCK TUAH. Spy on that thang. The flock is always watching."
@@ -21,13 +22,14 @@
     :root {
       --bg: #070707;
       --panel: #111;
-      --panel-2: #171717;
       --text: #fff;
       --muted: #aaa;
       --pink: #ff2c98;
-      --line: #343434;
+      --line: #303030;
       --green: #64ff8c;
       --yellow: #ffe66d;
+      --paper: #efefdf;
+      --stamp: #c40000;
     }
 
     * {
@@ -40,13 +42,13 @@
 
     body {
       margin: 0;
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
       background:
         linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
         var(--bg);
       background-size: 32px 32px;
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
     }
 
     a {
@@ -59,21 +61,23 @@
     }
 
     .wrap {
-      width: min(1120px, calc(100% - 28px));
+      width: min(1080px, calc(100% - 28px));
       margin: auto;
     }
+
+    /* NAV */
 
     .nav {
       position: sticky;
       top: 0;
-      z-index: 20;
-      background: rgba(7,7,7,.9);
-      backdrop-filter: blur(10px);
+      z-index: 30;
+      background: rgba(7,7,7,.94);
       border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
     }
 
     .nav-inner {
-      min-height: 60px;
+      min-height: 58px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -92,91 +96,78 @@
 
     .nav-links {
       display: flex;
-      gap: 15px;
+      align-items: center;
+      gap: 16px;
       font-size: 11px;
       font-weight: 900;
       letter-spacing: 1px;
     }
 
+    /* HERO */
+
     .hero {
       text-align: center;
-      padding: 44px 0 26px;
+      padding: 40px 0 26px;
     }
 
     .eyebrow {
       color: var(--pink);
       font-size: 12px;
       font-weight: 900;
-      letter-spacing: 2.5px;
-      margin-bottom: 8px;
-    }
-
-    h1 {
-      margin: 0;
-      font-family: Impact, "Arial Black", sans-serif;
-      font-size: clamp(58px, 17vw, 150px);
-      line-height: .86;
-      letter-spacing: -1px;
-      text-transform: uppercase;
-      text-shadow: 5px 5px 0 #000;
-    }
-
-    .ticker {
-      margin: 14px 0 6px;
-      color: var(--pink);
-      font-family: Impact, "Arial Black", sans-serif;
-      font-size: clamp(25px, 7vw, 50px);
-    }
-
-    .tagline {
-      margin: 0 auto 24px;
-      font-family: Impact, "Arial Black", sans-serif;
-      font-size: clamp(28px, 8vw, 64px);
-      line-height: .95;
-      text-transform: uppercase;
+      letter-spacing: 2.6px;
+      margin-bottom: 18px;
     }
 
     .hero-art {
       width: min(720px, 100%);
       display: block;
-      margin: 24px auto;
+      margin: 0 auto;
       border: 3px solid white;
       border-radius: 18px;
       box-shadow: 10px 10px 0 var(--pink);
     }
 
-    .buttons {
+    .hero-actions {
+      margin-top: 28px;
       display: flex;
+      justify-content: center;
       flex-wrap: wrap;
       gap: 10px;
-      justify-content: center;
-      margin-top: 26px;
     }
 
     .btn {
-      min-height: 50px;
-      padding: 0 22px;
-      border: 2px solid white;
-      background: white;
-      color: #000;
+      min-height: 52px;
+      padding: 0 24px;
+      border: 2px solid var(--pink);
+      background: #090909;
+      color: white;
       font-weight: 1000;
+      letter-spacing: .4px;
       text-transform: uppercase;
+      box-shadow: 5px 5px 0 var(--pink);
       cursor: pointer;
-      box-shadow: 4px 4px 0 var(--pink);
     }
 
     .btn.alt {
-      color: white;
-      background: transparent;
+      border-color: white;
+      box-shadow: 5px 5px 0 #333;
     }
 
-    .btn.disabled {
-      opacity: .55;
-      cursor: default;
+    .hero-meta {
+      margin-top: 22px;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: clamp(24px, 7vw, 48px);
+      line-height: 1;
+      text-transform: uppercase;
     }
+
+    .hero-meta span {
+      color: var(--pink);
+    }
+
+    /* SURVEILLANCE */
 
     .surveillance {
-      margin: 28px 0 0;
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
       background: #0c0c0c;
@@ -213,8 +204,10 @@
       margin-top: 4px;
     }
 
+    /* SECTIONS */
+
     section {
-      padding: 72px 0;
+      padding: 58px 0;
       border-bottom: 1px solid var(--line);
     }
 
@@ -226,41 +219,52 @@
       margin-bottom: 7px;
     }
 
+    h1,
     h2 {
-      margin: 0 0 20px;
+      margin: 0;
       font-family: Impact, "Arial Black", sans-serif;
-      font-size: clamp(42px, 11vw, 90px);
-      line-height: .92;
       text-transform: uppercase;
     }
 
+    h2 {
+      font-size: clamp(42px, 11vw, 82px);
+      line-height: .92;
+      margin-bottom: 18px;
+    }
+
     .lead {
-      max-width: 700px;
-      font-size: clamp(20px, 4vw, 28px);
+      max-width: 720px;
+      font-size: clamp(19px, 4vw, 27px);
       line-height: 1.35;
       font-weight: 700;
+    }
+
+    .lead + .lead {
+      margin-top: 16px;
     }
 
     .pink {
       color: var(--pink);
     }
 
+    /* CASE FILE */
+
     .case-file {
-      border: 2px solid #ddd;
-      background: #efefdf;
+      max-width: 680px;
+      background: var(--paper);
       color: #111;
-      padding: 22px;
-      max-width: 720px;
-      box-shadow: 10px 10px 0 #333;
+      padding: 20px;
+      border: 2px solid #ddd;
+      box-shadow: 8px 8px 0 #333;
     }
 
     .case-title {
-      border-bottom: 3px solid #111;
-      padding-bottom: 10px;
-      margin-bottom: 18px;
       font-family: "Courier New", monospace;
-      font-size: 20px;
       font-weight: 900;
+      font-size: 18px;
+      border-bottom: 3px solid #111;
+      padding-bottom: 9px;
+      margin-bottom: 14px;
     }
 
     .case-row {
@@ -275,35 +279,37 @@
 
     .stamp {
       display: inline-block;
-      margin-top: 24px;
-      border: 5px solid #d40000;
-      color: #d40000;
-      padding: 8px 15px;
+      margin-top: 20px;
+      padding: 7px 13px;
+      border: 5px solid var(--stamp);
+      color: var(--stamp);
       font-family: Impact, "Arial Black", sans-serif;
-      font-size: clamp(30px, 7vw, 54px);
-      transform: rotate(-5deg);
+      font-size: clamp(27px, 6vw, 48px);
+      transform: rotate(-4deg);
     }
+
+    /* ROADMAP */
 
     .roadmap {
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
 
     .road-item {
       border: 1px solid var(--line);
       background: var(--panel);
-      padding: 20px;
+      padding: 18px;
     }
 
     .road-number {
       color: var(--pink);
       font-family: Impact, "Arial Black", sans-serif;
-      font-size: 32px;
+      font-size: 30px;
     }
 
     .road-item h3 {
       margin: 2px 0 5px;
-      font-size: 22px;
+      font-size: 21px;
       text-transform: uppercase;
     }
 
@@ -311,6 +317,8 @@
       margin: 0;
       color: var(--muted);
     }
+
+    /* HOW TO FLOCK */
 
     .how {
       display: grid;
@@ -320,12 +328,12 @@
 
     .how-step {
       counter-increment: flock;
-      border: 1px solid var(--line);
-      padding: 18px;
-      background: var(--panel);
       display: flex;
-      gap: 15px;
       align-items: flex-start;
+      gap: 15px;
+      padding: 17px;
+      border: 1px solid var(--line);
+      background: var(--panel);
     }
 
     .how-step::before {
@@ -334,6 +342,8 @@
       font-family: Impact, "Arial Black", sans-serif;
       font-size: 30px;
     }
+
+    /* RECORDS */
 
     .records {
       border: 1px solid var(--line);
@@ -344,7 +354,7 @@
 
     .record {
       display: grid;
-      grid-template-columns: 145px 1fr;
+      grid-template-columns: 175px 1fr;
       gap: 12px;
       padding: 10px 0;
       border-bottom: 1px dotted #333;
@@ -359,52 +369,53 @@
     }
 
     .record-value {
-      overflow-wrap: anywhere;
       font-weight: 700;
+      overflow-wrap: anywhere;
     }
 
     .warning {
-      margin-top: 20px;
-      border-left: 5px solid var(--yellow);
+      margin-top: 18px;
       padding: 14px 16px;
+      border-left: 5px solid var(--yellow);
       background: #17150c;
       line-height: 1.5;
     }
 
-    .socials {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .social {
-      border: 2px solid white;
-      padding: 14px 18px;
-      font-weight: 1000;
-      text-transform: uppercase;
-    }
+    /* FOOTER */
 
     footer {
+      padding: 42px 0 52px;
       text-align: center;
-      padding: 45px 0 60px;
       color: var(--muted);
     }
 
     .footer-watch {
+      margin-bottom: 8px;
       color: white;
       font-family: Impact, "Arial Black", sans-serif;
-      font-size: 30px;
-      margin-bottom: 8px;
+      font-size: 28px;
+    }
+
+    .domain {
+      color: var(--pink);
+      font-weight: 900;
+      letter-spacing: 1px;
     }
 
     .disclaimer {
       max-width: 720px;
-      margin: 24px auto 0;
+      margin: 22px auto 0;
       font-size: 12px;
       line-height: 1.6;
     }
 
+    /* RESPONSIVE */
+
     @media (min-width: 760px) {
+      .hero {
+        padding-top: 62px;
+      }
+
       .stats {
         grid-template-columns: repeat(4, 1fr);
       }
@@ -416,33 +427,48 @@
       .how {
         grid-template-columns: repeat(2, 1fr);
       }
-
-      .hero {
-        padding-top: 70px;
-      }
     }
 
     @media (max-width: 580px) {
-      .nav-links a:nth-child(1) {
+      .nav-links a:first-child {
         display: none;
       }
 
       .nav-links {
-        gap: 11px;
+        gap: 12px;
+      }
+
+      .hero {
+        padding-top: 30px;
+      }
+
+      .hero-art {
+        border-radius: 14px;
+        box-shadow: 7px 7px 0 var(--pink);
+      }
+
+      .hero-meta {
+        margin-top: 20px;
+      }
+
+      section {
+        padding: 48px 0;
       }
 
       .case-row,
       .record {
         grid-template-columns: 1fr;
-        gap: 2px;
+        gap: 3px;
       }
     }
   </style>
 </head>
 
 <body>
+
   <header class="nav">
     <div class="wrap nav-inner">
+
       <a class="brand-mini" href="#">
         FLOCK <span>TUAH</span>
       </a>
@@ -450,22 +476,20 @@
       <nav class="nav-links">
         <a href="#what">THE MEME</a>
         <a href="#records">PUBLIC RECORDS</a>
-        <a href="#flock">THE FLOCK</a>
+        <a href="#how">HOW TO FLOCK</a>
       </nav>
+
     </div>
   </header>
 
   <main>
+
+    <!-- HERO -->
+
     <div class="wrap hero">
-      <div class="eyebrow">THE FLOCK IS ALWAYS WATCHING</div>
 
-      <h1>FLOCK<br>TUAH</h1>
-
-      <div class="ticker">$FLOCKTUAH</div>
-
-      <div class="tagline">
-        SPY ON<br>
-        <span class="pink">THAT THANG.</span>
+      <div class="eyebrow">
+        THE FLOCK IS ALWAYS WATCHING
       </div>
 
       <img
@@ -474,19 +498,39 @@
         class="hero-art"
       />
 
-      <div class="buttons">
-        <a id="buyButton" class="btn disabled">COMING SOON</a>
-        <button id="copyButton" class="btn alt" style="display:none;">
+      <div class="hero-meta">
+        $FLOCKTUAH<br>
+        <span>SPY ON THAT THANG.</span>
+      </div>
+
+      <div class="hero-actions">
+        <a id="buyButton" class="btn">
+          COMING SOON
+        </a>
+
+        <button
+          id="copyButton"
+          class="btn alt"
+          style="display:none;"
+        >
           COPY CONTRACT
         </button>
       </div>
+
     </div>
 
+    <!-- SURVEILLANCE -->
+
     <div class="surveillance">
+
       <div class="wrap surveillance-inner">
-        <div class="rec">● REC — FLOCK SURVEILLANCE NETWORK</div>
+
+        <div class="rec">
+          ● REC — FLOCK SURVEILLANCE NETWORK
+        </div>
 
         <div class="stats">
+
           <div class="stat">
             STATUS
             <strong>WATCHING</strong>
@@ -498,31 +542,49 @@
           </div>
 
           <div class="stat">
-            PROJECT TAX
+            PROJECT TRANSFER TAX
             <strong>0%</strong>
           </div>
 
           <div class="stat">
             CASE
-            <strong id="caseStatus">PRE-LAUNCH</strong>
+            <strong id="caseStatus">
+              PRE-LAUNCH
+            </strong>
           </div>
+
         </div>
+
       </div>
+
     </div>
 
+    <!-- WHAT THE FLOCK -->
+
     <section id="what">
+
       <div class="wrap">
-        <div class="section-label">CASE INTRODUCTION</div>
-        <h2>WHAT THE<br>FLOCK?</h2>
+
+        <div class="section-label">
+          CASE INTRODUCTION
+        </div>
+
+        <h2>
+          WHAT THE<br>
+          FLOCK?
+        </h2>
 
         <p class="lead">
           Somebody had to
-          <span class="pink">spy on that thang.</span>
+          <span class="pink">
+            spy on that thang.
+          </span>
         </p>
 
         <p class="lead">
-          FLOCK TUAH is a Solana meme token with one very important
-          assignment: <strong>WATCH EVERYTHING.</strong>
+          FLOCK TUAH is a Solana meme token
+          with one very important assignment:
+          <strong>WATCH EVERYTHING.</strong>
         </p>
 
         <p class="lead">
@@ -530,15 +592,28 @@
           No 47-page whitepaper.
           Just the flock doing what the flock does.
         </p>
+
       </div>
+
     </section>
 
+    <!-- CLERK CASE FILE -->
+
     <section>
+
       <div class="wrap">
-        <div class="section-label">DEPARTMENT OF MEMECOIN AFFAIRS</div>
-        <h2>OFFICIAL<br>CASE FILE</h2>
+
+        <div class="section-label">
+          FILED WITH THE CLERK
+        </div>
+
+        <h2>
+          CASE<br>
+          FILE
+        </h2>
 
         <div class="case-file">
+
           <div class="case-title">
             DEPARTMENT OF MEMECOIN AFFAIRS
           </div>
@@ -568,17 +643,33 @@
             <span>UNDER REVIEW</span>
           </div>
 
-          <div class="stamp">APPROVED FOR FLOCKING</div>
+          <div class="stamp">
+            APPROVED FOR FLOCKING
+          </div>
+
         </div>
+
       </div>
+
     </section>
 
+    <!-- ROADMAP -->
+
     <section>
+
       <div class="wrap">
-        <div class="section-label">REQUEST FOR STRATEGIC PLAN</div>
-        <h2>OFFICIAL<br>ROADMAP</h2>
+
+        <div class="section-label">
+          REQUEST FOR STRATEGIC PLAN
+        </div>
+
+        <h2>
+          OFFICIAL<br>
+          ROADMAP
+        </h2>
 
         <div class="roadmap">
+
           <div class="road-item">
             <div class="road-number">01</div>
             <h3>Flock</h3>
@@ -602,205 +693,318 @@
             <h3>Keep flocking</h3>
             <p>Further instructions pending.</p>
           </div>
+
         </div>
 
-        <div class="stamp">ROADMAP REQUEST: DENIED</div>
+        <div class="stamp">
+          ROADMAP REQUEST: DENIED
+        </div>
+
       </div>
+
     </section>
 
-    <section>
-      <div class="wrap">
-        <div class="section-label">OPERATING INSTRUCTIONS</div>
-        <h2>HOW TO<br>FLOCK</h2>
+    <!-- HOW TO FLOCK -->
 
-        <div id="preLaunchInstructions" class="warning">
-          <strong>CASE NOT YET OPEN.</strong><br>
-          $FLOCKTUAH has not launched yet. Do not buy tokens claiming to
-          be FLOCK TUAH before the official mint is published here.
+    <section id="how">
+
+      <div class="wrap">
+
+        <div class="section-label">
+          OPERATING INSTRUCTIONS
         </div>
 
-        <div id="liveInstructions" class="how" style="display:none;">
-          <div class="how-step">Get SOL.</div>
+        <h2>
+          HOW TO<br>
+          FLOCK
+        </h2>
+
+        <div
+          id="preLaunchInstructions"
+          class="warning"
+        >
+          <strong>CASE NOT YET OPEN.</strong>
+          <br><br>
+
+          $FLOCKTUAH has not launched yet.
+
+          Do not buy tokens claiming to be FLOCK TUAH
+          before the official Solana mint address is
+          published on flocktuah.com.
+        </div>
+
+        <div
+          id="liveInstructions"
+          class="how"
+          style="display:none;"
+        >
+
           <div class="how-step">
-            Visit the official FLOCK TUAH Pump.fun page linked here.
+            Get SOL.
           </div>
+
+          <div class="how-step">
+            Visit the official FLOCK TUAH Pump.fun page
+            linked from flocktuah.com.
+          </div>
+
           <div class="how-step">
             Verify the mint address against flocktuah.com.
           </div>
+
           <div class="how-step">
             Swap only what you're willing to risk.
           </div>
+
         </div>
+
       </div>
+
     </section>
 
+    <!-- PUBLIC RECORDS -->
+
     <section id="records">
+
       <div class="wrap">
-        <div class="section-label">OPEN RECORDS REQUEST GRANTED</div>
-        <h2>PUBLIC<br>RECORDS</h2>
+
+        <div class="section-label">
+          OPEN RECORDS REQUEST GRANTED
+        </div>
+
+        <h2>
+          PUBLIC<br>
+          RECORDS
+        </h2>
 
         <div class="records">
+
           <div class="record">
             <span class="record-key">NAME</span>
-            <span class="record-value">FLOCK TUAH</span>
+            <span class="record-value">
+              FLOCK TUAH
+            </span>
           </div>
 
           <div class="record">
             <span class="record-key">TICKER</span>
-            <span class="record-value">$FLOCKTUAH</span>
+            <span class="record-value">
+              $FLOCKTUAH
+            </span>
           </div>
 
           <div class="record">
             <span class="record-key">CHAIN</span>
-            <span class="record-value">SOLANA</span>
+            <span class="record-value">
+              SOLANA
+            </span>
           </div>
 
           <div class="record">
             <span class="record-key">LAUNCH</span>
-            <span class="record-value">PUMP.FUN</span>
+            <span class="record-value">
+              PUMP.FUN
+            </span>
           </div>
 
           <div class="record">
-            <span class="record-key">PROJECT TRANSFER TAX</span>
-            <span class="record-value">0%</span>
+            <span class="record-key">
+              PROJECT TRANSFER TAX
+            </span>
+
+            <span class="record-value">
+              0%
+            </span>
           </div>
 
           <div class="record">
             <span class="record-key">MINT</span>
-            <span id="mintAddress" class="record-value">
+
+            <span
+              id="mintAddress"
+              class="record-value"
+            >
               NOT CREATED
             </span>
           </div>
 
           <div class="record">
             <span class="record-key">STATUS</span>
-            <span id="publicStatus" class="record-value">
+
+            <span
+              id="publicStatus"
+              class="record-value"
+            >
               PRE-LAUNCH
             </span>
           </div>
+
         </div>
 
         <div class="warning">
-          <strong>VERIFY BEFORE YOU FLOCK.</strong><br><br>
-          Token names and ticker symbols can be copied. After launch,
-          the Solana mint address published on
-          <strong>flocktuah.com</strong> will identify the official
-          FLOCK TUAH token.
+
+          <strong>
+            VERIFY BEFORE YOU FLOCK.
+          </strong>
+
+          <br><br>
+
+          Token names and ticker symbols can be copied.
+
+          After launch, the Solana mint address published
+          on <strong>flocktuah.com</strong> will identify
+          the official FLOCK TUAH token.
+
         </div>
+
       </div>
+
     </section>
 
-    <section id="flock">
-      <div class="wrap">
-        <div class="section-label">AUTHORIZED COMMUNICATION CHANNELS</div>
-        <h2>JOIN THE<br>FLOCK</h2>
-
-        <div id="socialLinks" class="socials"></div>
-      </div>
-    </section>
   </main>
 
+  <!-- FOOTER -->
+
   <footer>
+
     <div class="wrap">
-      <div class="footer-watch">● THE FLOCK IS STILL WATCHING.</div>
-      <div>FLOCKTUAH.COM</div>
+
+      <div class="footer-watch">
+        ● THE FLOCK IS STILL WATCHING.
+      </div>
+
+      <div class="domain">
+        FLOCKTUAH.COM
+      </div>
 
       <p class="disclaimer">
-        FLOCK TUAH is a meme token. Crypto assets are highly speculative
-        and can lose substantial or all of their value. Nothing on this
-        website guarantees returns or constitutes financial advice.
+        FLOCK TUAH is a meme token.
+        Crypto assets are highly speculative and can lose
+        substantial or all of their value.
+        Nothing on this website guarantees returns or
+        constitutes financial advice.
       </p>
+
     </div>
+
   </footer>
 
   <script>
+
     /*
       ============================================================
       FLOCK TUAH SITE CONTROL PANEL
       ============================================================
 
-      This is the ONLY section you should need to edit after launch.
+      After launch, this should be the only area
+      that normally needs editing.
     */
 
     const SITE_CONFIG = {
-      status: "PRE-LAUNCH", // PRE-LAUNCH | BONDING | GRADUATED
+
+      status: "PRE-LAUNCH",
 
       mintAddress: "",
 
-      pumpUrl: "",
+      pumpUrl: ""
 
-      xUrl: "",
-
-      telegramUrl: ""
     };
 
     /*
       ============================================================
-      Site behavior
+      SITE BEHAVIOR
       ============================================================
     */
 
-    const buyButton = document.getElementById("buyButton");
-    const copyButton = document.getElementById("copyButton");
-    const mintAddress = document.getElementById("mintAddress");
-    const caseStatus = document.getElementById("caseStatus");
-    const publicStatus = document.getElementById("publicStatus");
-    const preLaunch = document.getElementById("preLaunchInstructions");
-    const liveInstructions = document.getElementById("liveInstructions");
-    const socialLinks = document.getElementById("socialLinks");
+    const buyButton =
+      document.getElementById("buyButton");
 
-    caseStatus.textContent = SITE_CONFIG.status;
-    publicStatus.textContent = SITE_CONFIG.status;
+    const copyButton =
+      document.getElementById("copyButton");
+
+    const mintAddress =
+      document.getElementById("mintAddress");
+
+    const caseStatus =
+      document.getElementById("caseStatus");
+
+    const publicStatus =
+      document.getElementById("publicStatus");
+
+    const preLaunch =
+      document.getElementById("preLaunchInstructions");
+
+    const liveInstructions =
+      document.getElementById("liveInstructions");
+
+
+    caseStatus.textContent =
+      SITE_CONFIG.status;
+
+    publicStatus.textContent =
+      SITE_CONFIG.status;
+
 
     if (SITE_CONFIG.mintAddress) {
-      mintAddress.textContent = SITE_CONFIG.mintAddress;
-      copyButton.style.display = "inline-block";
 
-      copyButton.addEventListener("click", async () => {
-        await navigator.clipboard.writeText(SITE_CONFIG.mintAddress);
+      mintAddress.textContent =
+        SITE_CONFIG.mintAddress;
 
-        const oldText = copyButton.textContent;
-        copyButton.textContent = "COPIED";
-        setTimeout(() => {
-          copyButton.textContent = oldText;
-        }, 1400);
-      });
+      copyButton.style.display =
+        "inline-block";
+
+
+      copyButton.addEventListener(
+        "click",
+        async () => {
+
+          await navigator.clipboard.writeText(
+            SITE_CONFIG.mintAddress
+          );
+
+          const original =
+            copyButton.textContent;
+
+          copyButton.textContent =
+            "COPIED";
+
+          setTimeout(() => {
+
+            copyButton.textContent =
+              original;
+
+          }, 1400);
+
+        }
+      );
+
     }
+
 
     if (SITE_CONFIG.pumpUrl) {
-      buyButton.textContent = "BUY $FLOCKTUAH";
-      buyButton.href = SITE_CONFIG.pumpUrl;
-      buyButton.target = "_blank";
-      buyButton.rel = "noopener noreferrer";
-      buyButton.classList.remove("disabled");
 
-      preLaunch.style.display = "none";
-      liveInstructions.style.display = "grid";
+      buyButton.textContent =
+        "BUY $FLOCKTUAH";
+
+      buyButton.href =
+        SITE_CONFIG.pumpUrl;
+
+      buyButton.target =
+        "_blank";
+
+      buyButton.rel =
+        "noopener noreferrer";
+
+
+      preLaunch.style.display =
+        "none";
+
+      liveInstructions.style.display =
+        "grid";
+
     }
 
-    const socials = [
-      ["X / TWITTER", SITE_CONFIG.xUrl],
-      ["TELEGRAM", SITE_CONFIG.telegramUrl],
-      ["PUMP.FUN", SITE_CONFIG.pumpUrl]
-    ];
-
-    socials.forEach(([label, url]) => {
-      if (!url) return;
-
-      const a = document.createElement("a");
-      a.href = url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      a.className = "social";
-      a.textContent = label;
-
-      socialLinks.appendChild(a);
-    });
-
-    if (!socialLinks.children.length) {
-      socialLinks.innerHTML =
-        '<span style="color:#aaa;font-weight:700;">OFFICIAL CHANNELS PENDING.</span>';
-    }
   </script>
+
 </body>
 </html>
