@@ -160,15 +160,17 @@
     }
 
     /*
-      FLOCK WATCH HERO TEASER
-      One card. One tap target. No nested button.
+      FLOCK WATCH HERO
+      Exact same width as hero action area.
     */
 
     .watch-strip{
       width:min(720px,100%);
       margin:22px auto 0;
       padding:16px 18px;
+
       border:1.5px solid #2f8c49;
+
       background:
         linear-gradient(
           135deg,
@@ -217,8 +219,36 @@
       height:8px;
       border-radius:50%;
       background:var(--green);
-      box-shadow:0 0 10px rgba(100,255,140,.85);
       flex:0 0 auto;
+
+      animation:
+        flockPulse 1.55s ease-in-out infinite;
+    }
+
+    @keyframes flockPulse{
+      0%,
+      100%{
+        opacity:.55;
+        transform:scale(.88);
+        box-shadow:
+          0 0 3px rgba(100,255,140,.45);
+      }
+
+      50%{
+        opacity:1;
+        transform:scale(1.18);
+        box-shadow:
+          0 0 8px rgba(100,255,140,1),
+          0 0 16px rgba(100,255,140,.55);
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      .watch-live-dot{
+        animation:none;
+        box-shadow:
+          0 0 8px rgba(100,255,140,.85);
+      }
     }
 
     .watch-strip-title{
@@ -728,17 +758,9 @@
 
     <nav class="nav-links">
 
-      <a href="#what">
-        THE MEME
-      </a>
-
-      <a href="#records">
-        PUBLIC RECORDS
-      </a>
-
-      <a href="#how">
-        HOW TO FLOCK
-      </a>
+      <a href="#what">THE MEME</a>
+      <a href="#records">PUBLIC RECORDS</a>
+      <a href="#how">HOW TO FLOCK</a>
 
       <a
         class="nav-watch"
@@ -879,10 +901,7 @@
 
 </div>
 
-<section
-  id="watch"
-  class="watch-section"
->
+<section id="watch" class="watch-section">
 
   <div class="wrap watch-compact">
 
@@ -898,9 +917,7 @@
 
     <p class="lead">
       The surveillance meme finally became
-      <span class="pink">
-        useful.
-      </span>
+      <span class="pink">useful.</span>
     </p>
 
     <p class="lead">
@@ -912,68 +929,43 @@
     <div class="watch-points">
 
       <div class="watch-point">
-
-        <div class="watch-point-icon">
-          🔎
-        </div>
-
+        <div class="watch-point-icon">🔎</div>
         <div>
           <strong>SEARCH YOUR AREA</strong>
           <span>Address, city, or ZIP code.</span>
         </div>
-
       </div>
 
       <div class="watch-point">
-
-        <div class="watch-point-icon">
-          👀
-        </div>
-
+        <div class="watch-point-icon">👀</div>
         <div>
           <strong>SEE THE FLOCK</strong>
           <span>Explore documented ALPR cameras nearby.</span>
         </div>
-
       </div>
 
       <div class="watch-point">
-
-        <div class="watch-point-icon">
-          📍
-        </div>
-
+        <div class="watch-point-icon">📍</div>
         <div>
           <strong>CHECK DISTANCE</strong>
           <span>See cameras within 1, 3, and 5 miles.</span>
         </div>
-
       </div>
 
       <div class="watch-point">
-
-        <div class="watch-point-icon">
-          📱
-        </div>
-
+        <div class="watch-point-icon">📱</div>
         <div>
           <strong>BUILT FOR YOUR PHONE</strong>
           <span>Tap the map and open camera details directly.</span>
         </div>
-
       </div>
 
     </div>
 
     <div class="watch-cta">
-
-      <a
-        class="btn social"
-        href="/flock-watch.html"
-      >
+      <a class="btn social" href="/flock-watch.html">
         👀 OPEN FLOCK WATCH
       </a>
-
     </div>
 
   </div>
@@ -996,9 +988,7 @@
 
     <p class="lead">
       Somebody had to
-      <span class="pink">
-        spy on that thang.
-      </span>
+      <span class="pink">spy on that thang.</span>
     </p>
 
     <p class="lead">
@@ -1145,13 +1135,9 @@
       id="preLaunchInstructions"
       class="warning"
       style="display:none;"
-    >
-    </div>
+    ></div>
 
-    <div
-      id="liveInstructions"
-      class="how"
-    >
+    <div id="liveInstructions" class="how">
 
       <div class="how-step">
         Get SOL.
@@ -1240,22 +1226,14 @@
 
       <div class="record">
         <span class="record-key">MINT</span>
-
-        <span
-          id="mintAddress"
-          class="record-value"
-        >
+        <span id="mintAddress" class="record-value">
           DuaCPghmrtvoC7Ddmrw5fmtwyvjPtZyz6GPuYqyipump
         </span>
       </div>
 
       <div class="record">
         <span class="record-key">STATUS</span>
-
-        <span
-          id="publicStatus"
-          class="record-value"
-        >
+        <span id="publicStatus" class="record-value">
           BONDING
         </span>
       </div>
@@ -1267,21 +1245,23 @@
 
       <div class="record">
         <span class="record-key">COMMUNITY</span>
-        <span class="record-value">https://t.me/flocktuah_watchers</span>
+        <span class="record-value">
+          https://t.me/flocktuah_watchers
+        </span>
       </div>
 
       <div class="record">
         <span class="record-key">X</span>
-        <span class="record-value">https://x.com/flocktuah</span>
+        <span class="record-value">
+          https://x.com/flocktuah
+        </span>
       </div>
 
     </div>
 
     <div class="warning">
 
-      <strong>
-        VERIFY BEFORE YOU FLOCK.
-      </strong>
+      <strong>VERIFY BEFORE YOU FLOCK.</strong>
 
       <br><br>
 
