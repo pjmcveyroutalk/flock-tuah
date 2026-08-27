@@ -159,18 +159,42 @@
       color:var(--pink);
     }
 
+    /*
+      FLOCK WATCH HERO TEASER
+      One card. One tap target. No nested button.
+    */
+
     .watch-strip{
       width:min(720px,100%);
       margin:22px auto 0;
-      padding:13px 14px;
-      border:1px solid #2e5c39;
-      background:#0c110d;
+      padding:16px 18px;
+      border:1.5px solid #2f8c49;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(100,255,140,.07),
+          rgba(255,44,152,.025)
+        ),
+        #0b100c;
+
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
+      gap:16px;
       text-align:left;
-      border-radius:var(--radius);
+
+      border-radius:var(--radius-lg);
+
+      transition:
+        border-color .15s ease,
+        background .15s ease,
+        transform .15s ease;
+    }
+
+    .watch-strip:active{
+      transform:scale(.99);
+      border-color:var(--green);
+      background:#0e1710;
     }
 
     .watch-strip-copy{
@@ -178,16 +202,28 @@
     }
 
     .watch-strip-kicker{
+      display:flex;
+      align-items:center;
+      gap:7px;
       color:var(--green);
       font-size:10px;
       font-weight:1000;
       letter-spacing:1.2px;
-      margin-bottom:3px;
+      margin-bottom:5px;
+    }
+
+    .watch-live-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--green);
+      box-shadow:0 0 10px rgba(100,255,140,.85);
+      flex:0 0 auto;
     }
 
     .watch-strip-title{
       font-weight:900;
-      font-size:14px;
+      font-size:15px;
       line-height:1.25;
     }
 
@@ -195,20 +231,24 @@
       color:var(--pink);
     }
 
-    .watch-strip-link{
+    .watch-strip-arrow{
       flex:0 0 auto;
-      min-height:40px;
-      padding:0 14px;
-      border:1px solid var(--green);
-      background:#0d1710;
-      color:white;
-      font-size:11px;
-      font-weight:1000;
-      display:inline-flex;
+
+      width:38px;
+      height:38px;
+
+      display:flex;
       align-items:center;
       justify-content:center;
-      white-space:nowrap;
-      border-radius:var(--radius-sm);
+
+      border:1px solid #347c48;
+      border-radius:50%;
+
+      color:var(--green);
+      background:#0d1710;
+
+      font-size:18px;
+      font-weight:900;
     }
 
     .hero-actions{
@@ -623,15 +663,6 @@
       .nav-links a:not(.nav-watch){
         display:none;
       }
-
-      .watch-strip{
-        align-items:stretch;
-        flex-direction:column;
-      }
-
-      .watch-strip-link{
-        width:100%;
-      }
     }
 
     @media(max-width:580px){
@@ -647,6 +678,19 @@
 
       .hero-meta{
         margin-top:18px;
+      }
+
+      .watch-strip{
+        padding:15px 16px;
+      }
+
+      .watch-strip-title{
+        font-size:14px;
+      }
+
+      .watch-strip-arrow{
+        width:36px;
+        height:36px;
       }
 
       .secondary-actions{
@@ -728,12 +772,20 @@
     <span>SPY ON THAT THANG.</span>
   </div>
 
-  <div class="watch-strip">
+  <a
+    class="watch-strip"
+    href="/flock-watch.html"
+    aria-label="Open Flock Watch camera search"
+  >
 
     <div class="watch-strip-copy">
 
       <div class="watch-strip-kicker">
-        👀 FLOCK WATCH IS LIVE
+
+        <i class="watch-live-dot"></i>
+
+        FLOCK WATCH IS LIVE
+
       </div>
 
       <div class="watch-strip-title">
@@ -743,14 +795,11 @@
 
     </div>
 
-    <a
-      class="watch-strip-link"
-      href="/flock-watch.html"
-    >
-      FIND CAMERAS NEAR YOU →
-    </a>
+    <div class="watch-strip-arrow">
+      →
+    </div>
 
-  </div>
+  </a>
 
   <div class="hero-actions">
 
