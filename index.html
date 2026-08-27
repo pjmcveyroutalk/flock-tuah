@@ -127,7 +127,7 @@
 
     .hero{
       text-align:center;
-      padding:36px 0 24px;
+      padding:36px 0 34px;
     }
 
     .eyebrow{
@@ -161,7 +161,7 @@
 
     .watch-strip{
       width:min(720px,100%);
-      margin:20px auto 0;
+      margin:22px auto 0;
       padding:13px 14px;
       border:1px solid #2e5c39;
       background:#0c110d;
@@ -212,42 +212,69 @@
     }
 
     .hero-actions{
-      margin-top:20px;
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:9px;
-      max-width:720px;
-      margin-left:auto;
-      margin-right:auto;
+      width:min(720px,100%);
+      margin:24px auto 0;
     }
 
-    .btn{
-      min-height:48px;
-      padding:0 16px;
+    .buy-primary{
+      width:100%;
+      min-height:54px;
       border:2px solid var(--pink);
       background:#090909;
       color:white;
       font-weight:1000;
+      font-size:15px;
       letter-spacing:.35px;
       text-transform:uppercase;
-      box-shadow:4px 4px 0 var(--pink);
+      box-shadow:5px 5px 0 var(--pink);
+      border-radius:var(--radius);
+      display:flex;
+      align-items:center;
+      justify-content:center;
       cursor:pointer;
+    }
+
+    .secondary-actions{
+      margin-top:13px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .secondary-action{
+      min-height:36px;
+      padding:0 12px;
+      border:1px solid #393939;
+      background:#0d0d0d;
+      color:#ddd;
+      border-radius:var(--radius-sm);
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      text-align:center;
-      font-size:13px;
-      border-radius:var(--radius);
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.35px;
+      text-transform:uppercase;
+      cursor:pointer;
     }
 
-    .btn.alt{
-      border-color:white;
-      box-shadow:4px 4px 0 #333;
+    .secondary-action:hover{
+      border-color:#666;
     }
 
-    .btn.social{
-      border-color:var(--green);
-      box-shadow:4px 4px 0 #174d25;
+    .secondary-action.copy{
+      border-color:#777;
+    }
+
+    .secondary-action.telegram{
+      border-color:#285f37;
+      color:var(--green);
+    }
+
+    .secondary-action.x{
+      border-color:#555;
     }
 
     .surveillance{
@@ -257,14 +284,14 @@
     }
 
     .surveillance-inner{
-      padding:14px 0;
+      padding:18px 0;
     }
 
     .rec{
       color:var(--pink);
       font-weight:1000;
       letter-spacing:1px;
-      margin-bottom:10px;
+      margin-bottom:12px;
     }
 
     .stats{
@@ -375,9 +402,34 @@
       margin-top:20px;
     }
 
-    /*
-      Keep the government/case-file joke more angular.
-    */
+    .btn{
+      min-height:48px;
+      padding:0 16px;
+      border:2px solid var(--pink);
+      background:#090909;
+      color:white;
+      font-weight:1000;
+      letter-spacing:.35px;
+      text-transform:uppercase;
+      box-shadow:4px 4px 0 var(--pink);
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      font-size:13px;
+      border-radius:var(--radius);
+    }
+
+    .btn.alt{
+      border-color:white;
+      box-shadow:4px 4px 0 #333;
+    }
+
+    .btn.social{
+      border-color:var(--green);
+      box-shadow:4px 4px 0 #174d25;
+    }
 
     .case-file{
       max-width:680px;
@@ -572,10 +624,6 @@
         display:none;
       }
 
-      .hero-actions{
-        grid-template-columns:1fr 1fr;
-      }
-
       .watch-strip{
         align-items:stretch;
         flex-direction:column;
@@ -601,14 +649,15 @@
         margin-top:18px;
       }
 
-      .hero-actions{
-        grid-template-columns:1fr 1fr;
+      .secondary-actions{
+        gap:7px;
       }
 
-      .btn{
-        min-height:46px;
-        font-size:12px;
-        padding:0 10px;
+      .secondary-action{
+        flex:1 1 auto;
+        min-width:0;
+        padding:0 9px;
+        font-size:9px;
       }
 
       section{
@@ -707,35 +756,39 @@
 
     <a
       id="buyButton"
-      class="btn"
+      class="buy-primary"
     >
       BUY $FLOCKTUAH
     </a>
 
-    <button
-      id="copyButton"
-      class="btn alt"
-    >
-      COPY CONTRACT
-    </button>
+    <div class="secondary-actions">
 
-    <a
-      class="btn social"
-      href="https://t.me/flocktuah_watchers"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      JOIN THE FLOCK
-    </a>
+      <button
+        id="copyButton"
+        class="secondary-action copy"
+      >
+        COPY CONTRACT
+      </button>
 
-    <a
-      class="btn alt"
-      href="https://x.com/flocktuah"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      FOLLOW ON X
-    </a>
+      <a
+        class="secondary-action telegram"
+        href="https://t.me/flocktuah_watchers"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        JOIN THE FLOCK
+      </a>
+
+      <a
+        class="secondary-action x"
+        href="https://x.com/flocktuah"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        FOLLOW ON X
+      </a>
+
+    </div>
 
   </div>
 
