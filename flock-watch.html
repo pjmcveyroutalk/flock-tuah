@@ -1,606 +1,879 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>FLOCK WATCH | Find Flock Safety & ALPR Cameras Near You</title>
-
-<meta name="description"
-content="Search an address, city, or ZIP code and explore documented Flock Safety and ALPR camera locations near you.">
-
-<meta name="robots" content="noindex,nofollow">
-
-<link rel="stylesheet"
-href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css">
-
-<style>
-:root{
-  --bg:#070707;
-  --panel:#111;
-  --panel2:#161616;
-  --text:#fff;
-  --muted:#aaa;
-  --pink:#ff2c98;
-  --green:#64ff8c;
-  --yellow:#ffe66d;
-  --line:#303030;
-  --red:#ff7979;
-}
-
-*{box-sizing:border-box}
-
-html{scroll-behavior:smooth}
-
-html,body{
-  margin:0;
-  min-height:100%;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-}
-
-body{
-  background:
-    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),
-    var(--bg);
-  background-size:32px 32px;
-}
-
-a{color:inherit}
-
-.wrap{
-  width:min(1080px,calc(100% - 28px));
-  margin:auto;
-}
-
-header{
-  border-bottom:1px solid var(--line);
-  background:rgba(7,7,7,.96);
-}
-
-.header-inner{
-  min-height:58px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-}
-
-.brand{
-  font-family:Impact,"Arial Black",sans-serif;
-  font-size:21px;
-}
-
-.brand span{color:var(--pink)}
-
-.back-link{
-  color:var(--muted);
-  font-size:12px;
-  font-weight:800;
-  text-decoration:none;
-}
-
-.hero{
-  padding:27px 0 12px;
-}
-
-.eyebrow{
-  color:var(--pink);
-  font-size:11px;
-  font-weight:1000;
-  letter-spacing:2.3px;
-  margin-bottom:7px;
-}
-
-h1{
-  margin:0;
-  font-family:Impact,"Arial Black",sans-serif;
-  font-size:clamp(56px,15vw,108px);
-  line-height:.88;
-  text-transform:uppercase;
-}
-
-h1 span{color:var(--pink)}
-
-.tagline{
-  max-width:760px;
-  margin:14px 0 0;
-  font-size:clamp(17px,4vw,25px);
-  line-height:1.32;
-  font-weight:800;
-}
-
-.pink{color:var(--pink)}
-
-.search-panel{
-  margin-top:18px;
-  padding:15px;
-  background:var(--panel);
-  border:1px solid var(--line);
-  box-shadow:6px 6px 0 var(--pink);
-}
-
-.search-label{
-  display:block;
-  margin-bottom:7px;
-  color:var(--muted);
-  font-size:11px;
-  font-weight:900;
-  letter-spacing:1px;
-}
-
-.search-row{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:9px;
-}
-
-input{
-  min-height:52px;
-  width:100%;
-  padding:0 14px;
-  color:#fff;
-  background:#090909;
-  border:2px solid #444;
-  font-size:16px;
-  outline:none;
-}
-
-input:focus{border-color:var(--pink)}
-
-button{
-  min-height:52px;
-  padding:0 20px;
-  border:2px solid var(--pink);
-  background:#090909;
-  color:#fff;
-  font-size:12px;
-  font-weight:1000;
-  letter-spacing:.5px;
-  box-shadow:4px 4px 0 var(--pink);
-  cursor:pointer;
-}
-
-button:disabled{
-  opacity:.55;
-  cursor:wait;
-}
-
-.status{
-  margin-top:11px;
-  min-height:20px;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.4;
-}
-
-.status.good{color:var(--green)}
-.status.bad{color:var(--red)}
-
-.results-area{
-  display:none;
-  margin-top:14px;
-}
-
-.results-area.visible{display:block}
-
-.location-card,
-.summary-card,
-.manufacturer-card{
-  border:1px solid var(--line);
-  background:var(--panel2);
-}
-
-.location-card{
-  padding:11px 12px;
-}
-
-.location-card small,
-.summary-card small,
-.manufacturer-card small{
-  display:block;
-  color:var(--muted);
-  font-family:monospace;
-  font-size:10px;
-  letter-spacing:.7px;
-}
-
-.location-card strong{
-  color:var(--green);
-  display:block;
-  margin-top:4px;
-  font-size:16px;
-  line-height:1.25;
-}
-
-.radius-grid{
-  margin-top:7px;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:6px;
-}
-
-.summary-card{
-  padding:10px;
-}
-
-.summary-card strong{
-  display:block;
-  font-size:23px;
-  margin-top:4px;
-}
-
-.summary-card.primary strong{color:var(--green)}
-
-.manufacturer-grid{
-  margin-top:6px;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:6px;
-}
-
-.manufacturer-card{
-  padding:9px 10px;
-}
-
-.manufacturer-card strong{
-  display:block;
-  font-size:18px;
-  margin-top:4px;
-}
-
-.manufacturer-card.flock strong{color:var(--green)}
-.manufacturer-card.other strong{color:var(--pink)}
-
-.nearest{
-  display:none;
-  margin-top:8px;
-  border:1px solid var(--line);
-  background:#0e0e0e;
-}
-
-.nearest.visible{display:block}
-
-.nearest-header{
-  padding:11px 12px;
-  border-bottom:1px solid var(--line);
-  color:var(--pink);
-  font-size:10px;
-  font-weight:1000;
-  letter-spacing:1.4px;
-}
-
-.nearest-list{
-  margin:0;
-  padding:0;
-  list-style:none;
-}
-
-.nearest-item{
-  min-height:64px;
-  padding:11px 12px;
-  display:grid;
-  grid-template-columns:1fr auto;
-  align-items:center;
-  gap:10px;
-  border-bottom:1px solid #252525;
-  cursor:pointer;
-  touch-action:manipulation;
-}
-
-.nearest-item:last-child{border-bottom:0}
-
-.nearest-item:active{
-  background:#202020;
-}
-
-.nearest-brand{
-  font-weight:900;
-  font-size:14px;
-}
-
-.nearest-meta{
-  margin-top:3px;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.4;
-}
-
-.nearest-distance{
-  color:var(--green);
-  font-weight:900;
-  white-space:nowrap;
-  font-size:13px;
-}
-
-.source-link{
-  display:inline-block;
-  margin-top:4px;
-  color:var(--pink);
-  font-size:10px;
-  font-weight:900;
-}
-
-.map-shell{
-  margin-top:12px;
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-  background:#0b0b0b;
-}
-
-.map-header{
-  padding:11px 0 9px;
-}
-
-.map-header strong{
-  display:block;
-  color:var(--pink);
-  font-size:11px;
-  letter-spacing:1.7px;
-}
-
-.map-header span{
-  display:block;
-  margin-top:4px;
-  color:var(--muted);
-  font-size:12px;
-}
-
-.legend{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:8px;
-  font-size:10px;
-}
-
-.legend-item{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-}
-
-.legend-dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  border:1px solid #fff;
-}
-
-.legend-dot.you{background:#fff}
-.legend-dot.green{background:var(--green)}
-.legend-dot.pink{background:var(--pink)}
-
-#map{
-  width:100%;
-  height:min(61vh,620px);
-  min-height:410px;
-  background:#111;
-}
-
-.notice{
-  margin:20px 0 42px;
-  padding:16px;
-  border-left:5px solid var(--yellow);
-  background:#17150c;
-  color:#ddd;
-  line-height:1.5;
-  font-size:13px;
-}
-
-.notice strong{color:#fff}
-
-.source-links{
-  margin-top:9px;
-  font-size:11px;
-  color:var(--muted);
-}
-
-.source-links a{color:var(--pink)}
-
-.maplibregl-popup-content{
-  background:#111;
-  color:#fff;
-  border:1px solid #444;
-  border-radius:0;
-  padding:14px;
-  min-width:220px;
-}
-
-.maplibregl-popup-tip{
-  border-top-color:#111!important;
-}
-
-.popup-title{
-  color:var(--pink);
-  font-weight:1000;
-  margin-bottom:7px;
-}
-
-.popup-row{
-  margin:5px 0;
-  font-size:12px;
-}
-
-@media(max-width:700px){
-
-  .search-row{
-    grid-template-columns:1fr;
-  }
-
-  button{
-    width:100%;
-  }
-
-  .manufacturer-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-}
-
-@media(max-width:430px){
-
-  .wrap{
-    width:min(100% - 20px,1080px);
-  }
-
-  .hero{
-    padding-top:23px;
-  }
-
-  .search-panel{
-    padding:13px;
-  }
-
-  .summary-card{
-    padding:8px 6px;
-  }
-
-  .summary-card small{
-    font-size:9px;
-  }
-
-  .summary-card strong{
-    font-size:21px;
-  }
-
-  .manufacturer-card{
-    padding:8px;
-  }
-
-  .manufacturer-card strong{
-    font-size:17px;
-  }
-
-  #map{
-    height:58vh;
-    min-height:420px;
-  }
-}
-</style>
+  <meta charset="utf-8">
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  >
+
+  <title>
+    FLOCK WATCH | Find Flock Safety & ALPR Cameras Near You
+  </title>
+
+  <meta
+    name="description"
+    content="Search an address, city, or ZIP code and explore documented Flock Safety and ALPR camera locations near you."
+  >
+
+  <meta
+    name="robots"
+    content="noindex,nofollow"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css"
+  >
+
+  <style>
+    :root {
+      --bg:#070707;
+      --panel:#111;
+      --panel2:#161616;
+      --text:#fff;
+      --muted:#aaa;
+      --pink:#ff2c98;
+      --green:#64ff8c;
+      --yellow:#ffe66d;
+      --line:#303030;
+      --red:#ff7979;
+    }
+
+    * {
+      box-sizing:border-box;
+    }
+
+    html {
+      scroll-behavior:smooth;
+    }
+
+    html,
+    body {
+      margin:0;
+      min-height:100%;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Arial,Helvetica,sans-serif;
+    }
+
+    body {
+      background:
+        linear-gradient(
+          rgba(255,255,255,.025) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,.025) 1px,
+          transparent 1px
+        ),
+        var(--bg);
+
+      background-size:32px 32px;
+    }
+
+    a {
+      color:inherit;
+    }
+
+    .wrap {
+      width:min(1080px,calc(100% - 28px));
+      margin:auto;
+    }
+
+    header {
+      border-bottom:1px solid var(--line);
+      background:rgba(7,7,7,.96);
+    }
+
+    .header-inner {
+      min-height:58px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .brand {
+      font-family:Impact,"Arial Black",sans-serif;
+      font-size:21px;
+    }
+
+    .brand span {
+      color:var(--pink);
+    }
+
+    .back-link {
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+      text-decoration:none;
+    }
+
+    .hero {
+      padding:27px 0 12px;
+    }
+
+    .eyebrow {
+      color:var(--pink);
+      font-size:11px;
+      font-weight:1000;
+      letter-spacing:2.3px;
+      margin-bottom:7px;
+    }
+
+    h1 {
+      margin:0;
+      font-family:Impact,"Arial Black",sans-serif;
+      font-size:clamp(56px,15vw,108px);
+      line-height:.88;
+      text-transform:uppercase;
+    }
+
+    h1 span {
+      color:var(--pink);
+    }
+
+    .tagline {
+      max-width:760px;
+      margin:14px 0 0;
+      font-size:clamp(17px,4vw,25px);
+      line-height:1.32;
+      font-weight:800;
+    }
+
+    .pink {
+      color:var(--pink);
+    }
+
+    .search-panel {
+      margin-top:18px;
+      padding:15px;
+      background:var(--panel);
+      border:1px solid var(--line);
+      box-shadow:6px 6px 0 var(--pink);
+    }
+
+    .search-label {
+      display:block;
+      margin-bottom:7px;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1px;
+    }
+
+    .search-row {
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:9px;
+    }
+
+    input {
+      min-height:52px;
+      width:100%;
+      padding:0 14px;
+      color:#fff;
+      background:#090909;
+      border:2px solid #444;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus {
+      border-color:var(--pink);
+    }
+
+    button {
+      min-height:52px;
+      padding:0 20px;
+      border:2px solid var(--pink);
+      background:#090909;
+      color:#fff;
+      font-size:12px;
+      font-weight:1000;
+      letter-spacing:.5px;
+      box-shadow:4px 4px 0 var(--pink);
+      cursor:pointer;
+    }
+
+    button:disabled {
+      opacity:.55;
+      cursor:wait;
+    }
+
+    .status {
+      margin-top:11px;
+      min-height:20px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .status.good {
+      color:var(--green);
+    }
+
+    .status.bad {
+      color:var(--red);
+    }
+
+    .results-area {
+      display:none;
+      margin-top:14px;
+    }
+
+    .results-area.visible {
+      display:block;
+    }
+
+    .location-card,
+    .summary-card,
+    .manufacturer-card {
+      border:1px solid var(--line);
+      background:var(--panel2);
+    }
+
+    .location-card {
+      padding:11px 12px;
+    }
+
+    .location-card small,
+    .summary-card small,
+    .manufacturer-card small {
+      display:block;
+      color:var(--muted);
+      font-family:monospace;
+      font-size:10px;
+      letter-spacing:.7px;
+    }
+
+    .location-card strong {
+      color:var(--green);
+      display:block;
+      margin-top:4px;
+      font-size:16px;
+      line-height:1.25;
+    }
+
+    .radius-grid {
+      margin-top:7px;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:6px;
+    }
+
+    .summary-card {
+      padding:10px;
+    }
+
+    .summary-card strong {
+      display:block;
+      font-size:23px;
+      margin-top:4px;
+    }
+
+    .summary-card.primary strong {
+      color:var(--green);
+    }
+
+    .manufacturer-grid {
+      margin-top:6px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:6px;
+    }
+
+    .manufacturer-card {
+      padding:9px 10px;
+    }
+
+    .manufacturer-card strong {
+      display:block;
+      font-size:18px;
+      margin-top:4px;
+    }
+
+    .manufacturer-card.flock strong {
+      color:var(--green);
+    }
+
+    .manufacturer-card.other strong {
+      color:var(--pink);
+    }
+
+    .nearest {
+      display:none;
+      margin-top:8px;
+      border:1px solid var(--line);
+      background:#0e0e0e;
+    }
+
+    .nearest.visible {
+      display:block;
+    }
+
+    .nearest-header {
+      padding:11px 12px;
+      border-bottom:1px solid var(--line);
+      color:var(--pink);
+      font-size:10px;
+      font-weight:1000;
+      letter-spacing:1.4px;
+    }
+
+    .nearest-list {
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+
+    .nearest-item {
+      min-height:64px;
+      padding:11px 12px;
+      display:grid;
+      grid-template-columns:1fr auto;
+      align-items:center;
+      gap:10px;
+      border-bottom:1px solid #252525;
+      cursor:pointer;
+      touch-action:manipulation;
+    }
+
+    .nearest-item:last-child {
+      border-bottom:0;
+    }
+
+    .nearest-item:active {
+      background:#202020;
+    }
+
+    .nearest-brand {
+      font-weight:900;
+      font-size:14px;
+    }
+
+    .nearest-meta {
+      margin-top:3px;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.4;
+    }
+
+    .nearest-distance {
+      color:var(--green);
+      font-weight:900;
+      white-space:nowrap;
+      font-size:13px;
+    }
+
+    .map-shell {
+      margin-top:12px;
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      background:#0b0b0b;
+    }
+
+    .map-header {
+      padding:11px 0 9px;
+    }
+
+    .map-header strong {
+      display:block;
+      color:var(--pink);
+      font-size:11px;
+      letter-spacing:1.7px;
+    }
+
+    .map-header span {
+      display:block;
+      margin-top:4px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .legend {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:8px;
+      font-size:10px;
+    }
+
+    .legend-item {
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+    }
+
+    .legend-dot {
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      border:1px solid #fff;
+    }
+
+    .legend-dot.you {
+      background:#fff;
+    }
+
+    .legend-dot.green {
+      background:var(--green);
+    }
+
+    .legend-dot.pink {
+      background:var(--pink);
+    }
+
+    #map {
+      width:100%;
+      height:min(61vh,620px);
+      min-height:410px;
+      background:#111;
+    }
+
+    .notice {
+      margin:20px 0 42px;
+      padding:16px;
+      border-left:5px solid var(--yellow);
+      background:#17150c;
+      color:#ddd;
+      line-height:1.5;
+      font-size:13px;
+    }
+
+    .notice strong {
+      color:#fff;
+    }
+
+    .source-links {
+      margin-top:9px;
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .source-links a {
+      color:var(--pink);
+    }
+
+
+    /*
+    ==========================================================
+    CLEAN MOBILE POPUP CARD
+    ==========================================================
+    */
+
+    .maplibregl-popup {
+      max-width:none !important;
+    }
+
+    .maplibregl-popup-content {
+      width:min(290px,calc(100vw - 42px));
+      padding:0 !important;
+      overflow:hidden;
+      background:#0b0b0b !important;
+      color:#fff !important;
+      border:2px solid var(--pink);
+      border-radius:12px !important;
+      box-shadow:
+        0 12px 30px rgba(0,0,0,.55),
+        5px 5px 0 rgba(255,44,152,.55);
+    }
+
+    .maplibregl-popup-close-button {
+      top:8px !important;
+      right:8px !important;
+      width:30px !important;
+      height:30px !important;
+      padding:0 !important;
+      border:1px solid #444 !important;
+      border-radius:50% !important;
+      background:#151515 !important;
+      box-shadow:none !important;
+      color:#fff !important;
+      font-size:21px !important;
+      line-height:26px !important;
+      font-weight:400 !important;
+    }
+
+    .maplibregl-popup-close-button:active {
+      background:var(--pink) !important;
+    }
+
+    .maplibregl-popup-tip {
+      border-top-color:var(--pink) !important;
+      border-bottom-color:var(--pink) !important;
+    }
+
+    .camera-card {
+      width:100%;
+    }
+
+    .camera-card-head {
+      padding:14px 46px 12px 14px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,44,152,.18),
+          rgba(255,44,152,.02)
+        ),
+        #111;
+
+      border-bottom:1px solid #333;
+    }
+
+    .camera-card-kicker {
+      color:var(--pink);
+      font-size:10px;
+      font-weight:1000;
+      letter-spacing:1.6px;
+    }
+
+    .camera-card-brand {
+      margin-top:3px;
+      font-size:19px;
+      line-height:1.15;
+      font-weight:1000;
+      overflow-wrap:anywhere;
+    }
+
+    .camera-card-body {
+      padding:10px 14px 13px;
+    }
+
+    .camera-detail {
+      display:grid;
+      grid-template-columns:74px minmax(0,1fr);
+      gap:8px;
+      padding:8px 0;
+      border-bottom:1px solid #252525;
+    }
+
+    .camera-detail:last-of-type {
+      border-bottom:0;
+    }
+
+    .camera-detail-label {
+      color:#888;
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+    }
+
+    .camera-detail-value {
+      min-width:0;
+      color:#fff;
+      font-size:12px;
+      line-height:1.35;
+      font-weight:700;
+      overflow-wrap:anywhere;
+    }
+
+    .camera-detail-value.distance {
+      color:var(--green);
+    }
+
+    .camera-source {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      margin-top:11px;
+      padding:8px 12px;
+      border:1px solid var(--pink);
+      background:#160b11;
+      color:#fff;
+      text-decoration:none;
+      font-size:11px;
+      font-weight:1000;
+      letter-spacing:.5px;
+      text-align:center;
+    }
+
+    .camera-source:active {
+      background:var(--pink);
+    }
+
+
+    @media(max-width:700px) {
+
+      .search-row {
+        grid-template-columns:1fr;
+      }
+
+      button {
+        width:100%;
+      }
+
+      .manufacturer-grid {
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media(max-width:430px) {
+
+      .wrap {
+        width:min(100% - 20px,1080px);
+      }
+
+      .hero {
+        padding-top:23px;
+      }
+
+      .search-panel {
+        padding:13px;
+      }
+
+      .summary-card {
+        padding:8px 6px;
+      }
+
+      .summary-card small {
+        font-size:9px;
+      }
+
+      .summary-card strong {
+        font-size:21px;
+      }
+
+      .manufacturer-card {
+        padding:8px;
+      }
+
+      .manufacturer-card strong {
+        font-size:17px;
+      }
+
+      #map {
+        height:58vh;
+        min-height:420px;
+      }
+
+      .camera-detail {
+        grid-template-columns:65px minmax(0,1fr);
+      }
+    }
+  </style>
 </head>
+
 
 <body>
 
 <header>
-<div class="wrap header-inner">
 
-  <div class="brand">
-    FLOCK <span>TUAH</span>
+  <div class="wrap header-inner">
+
+    <div class="brand">
+      FLOCK <span>TUAH</span>
+    </div>
+
+    <a
+      class="back-link"
+      href="/"
+    >
+      ← BACK TO FLOCKTUAH.COM
+    </a>
+
   </div>
 
-  <a class="back-link" href="/">
-    ← BACK TO FLOCKTUAH.COM
-  </a>
-
-</div>
 </header>
+
 
 <main>
 
 <section class="hero">
 
-<div class="wrap">
+  <div class="wrap">
 
-  <div class="eyebrow">
-    PUBLIC SURVEILLANCE SEARCH
-  </div>
+    <div class="eyebrow">
+      PUBLIC SURVEILLANCE SEARCH
+    </div>
 
-  <h1>
-    FLOCK <span>WATCH</span>
-  </h1>
+    <h1>
+      FLOCK <span>WATCH</span>
+    </h1>
 
-  <p class="tagline">
-    Search an address, city, or ZIP code and explore
-    documented automated license plate reader cameras nearby.
-    <span class="pink">
-      The flock really is always watching. 👀
-    </span>
-  </p>
+    <p class="tagline">
 
-  <div class="search-panel">
+      Search an address, city, or ZIP code and explore
+      documented automated license plate reader cameras nearby.
 
-    <label class="search-label" for="locationInput">
-      ADDRESS / CITY / ZIP
-    </label>
+      <span class="pink">
+        The flock really is always watching. 👀
+      </span>
 
-    <div class="search-row">
+    </p>
 
-      <input
-        id="locationInput"
-        type="search"
-        placeholder="Example: Milwaukee, WI"
-        autocomplete="street-address"
+
+    <div class="search-panel">
+
+      <label
+        class="search-label"
+        for="locationInput"
+      >
+        ADDRESS / CITY / ZIP
+      </label>
+
+
+      <div class="search-row">
+
+        <input
+          id="locationInput"
+          type="search"
+          placeholder="Example: Milwaukee, WI"
+          autocomplete="street-address"
+        >
+
+        <button id="searchButton">
+          FIND THE FLOCK
+        </button>
+
+      </div>
+
+
+      <div
+        id="status"
+        class="status"
+      >
+        Enter a location to begin.
+      </div>
+
+
+      <div
+        id="resultsArea"
+        class="results-area"
       >
 
-      <button id="searchButton">
-        FIND THE FLOCK
-      </button>
+        <div class="location-card">
 
-    </div>
+          <small>
+            SEARCH LOCATION
+          </small>
 
-    <div id="status" class="status">
-      Enter a location to begin.
-    </div>
+          <strong id="locationName">
+            —
+          </strong>
 
-    <div id="resultsArea" class="results-area">
-
-      <div class="location-card">
-        <small>SEARCH LOCATION</small>
-        <strong id="locationName">—</strong>
-      </div>
-
-      <div class="radius-grid">
-
-        <div class="summary-card">
-          <small>WITHIN 1 MILE</small>
-          <strong id="count1">—</strong>
         </div>
 
-        <div class="summary-card">
-          <small>WITHIN 3 MILES</small>
-          <strong id="count3">—</strong>
+
+        <div class="radius-grid">
+
+          <div class="summary-card">
+
+            <small>
+              WITHIN 1 MILE
+            </small>
+
+            <strong id="count1">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="summary-card">
+
+            <small>
+              WITHIN 3 MILES
+            </small>
+
+            <strong id="count3">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="summary-card primary">
+
+            <small>
+              WITHIN 5 MILES
+            </small>
+
+            <strong id="count5">
+              —
+            </strong>
+
+          </div>
+
         </div>
 
-        <div class="summary-card primary">
-          <small>WITHIN 5 MILES</small>
-          <strong id="count5">—</strong>
+
+        <div class="manufacturer-grid">
+
+          <div class="manufacturer-card flock">
+
+            <small>
+              FLOCK SAFETY
+            </small>
+
+            <strong id="flockCount">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="manufacturer-card other">
+
+            <small>
+              MOTOROLA
+            </small>
+
+            <strong id="motorolaCount">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="manufacturer-card other">
+
+            <small>
+              GENETEC
+            </small>
+
+            <strong id="genetecCount">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="manufacturer-card">
+
+            <small>
+              OTHER / UNKNOWN
+            </small>
+
+            <strong id="otherCount">
+              —
+            </strong>
+
+          </div>
+
         </div>
 
-      </div>
 
-      <div class="manufacturer-grid">
+        <div
+          id="nearest"
+          class="nearest"
+        >
 
-        <div class="manufacturer-card flock">
-          <small>FLOCK SAFETY</small>
-          <strong id="flockCount">—</strong>
+          <div class="nearest-header">
+            👀 TAP A RESULT TO OPEN IT ON THE MAP
+          </div>
+
+          <ul
+            id="nearestList"
+            class="nearest-list"
+          ></ul>
+
         </div>
-
-        <div class="manufacturer-card other">
-          <small>MOTOROLA</small>
-          <strong id="motorolaCount">—</strong>
-        </div>
-
-        <div class="manufacturer-card other">
-          <small>GENETEC</small>
-          <strong id="genetecCount">—</strong>
-        </div>
-
-        <div class="manufacturer-card">
-          <small>OTHER / UNKNOWN</small>
-          <strong id="otherCount">—</strong>
-        </div>
-
-      </div>
-
-      <div id="nearest" class="nearest">
-
-        <div class="nearest-header">
-          👀 TAP A RESULT TO OPEN IT ON THE MAP
-        </div>
-
-        <ul id="nearestList" class="nearest-list"></ul>
 
       </div>
 
@@ -608,91 +881,119 @@ button:disabled{
 
   </div>
 
-</div>
 </section>
+
 
 <section class="map-shell">
 
-<div class="wrap map-header">
+  <div class="wrap map-header">
 
-  <strong>
-    👀 DOCUMENTED ALPR CAMERA MAP
-  </strong>
+    <strong>
+      👀 DOCUMENTED ALPR CAMERA MAP
+    </strong>
 
-  <span>
-    Tap near a camera dot. The touch target is larger than the visible marker.
-  </span>
-
-  <div class="legend">
-
-    <span class="legend-item">
-      <i class="legend-dot you"></i>
-      Search location
+    <span>
+      Tap near a camera dot. The touch target is larger than the visible marker.
     </span>
 
-    <span class="legend-item">
-      <i class="legend-dot green"></i>
-      Flock Safety
-    </span>
 
-    <span class="legend-item">
-      <i class="legend-dot pink"></i>
-      Other ALPR
-    </span>
+    <div class="legend">
+
+      <span class="legend-item">
+
+        <i class="legend-dot you"></i>
+
+        Search location
+
+      </span>
+
+
+      <span class="legend-item">
+
+        <i class="legend-dot green"></i>
+
+        Flock Safety
+
+      </span>
+
+
+      <span class="legend-item">
+
+        <i class="legend-dot pink"></i>
+
+        Other ALPR
+
+      </span>
+
+    </div>
 
   </div>
 
-</div>
 
-<div id="map"></div>
+  <div id="map"></div>
 
 </section>
 
+
 <div class="wrap">
 
-<div class="notice">
+  <div class="notice">
 
-  <strong>IMPORTANT:</strong>
+    <strong>
+      IMPORTANT:
+    </strong>
 
-  Camera locations shown here come from independent,
-  crowdsourced public mapping data. They are not an official
-  or complete registry of every ALPR deployment.
+    Camera locations shown here come from independent,
+    crowdsourced public mapping data.
 
-  Locations may be incomplete, outdated, moved, removed,
-  or incorrectly identified. Absence of a marker does
-  <strong>not</strong> mean an area is camera-free.
+    They are not an official or complete registry of every
+    ALPR deployment.
 
-  <div class="source-links">
+    Locations may be incomplete, outdated, moved, removed,
+    or incorrectly identified.
 
-    Camera feed:
+    Absence of a marker does
+    <strong>not</strong>
+    mean an area is camera-free.
 
-    <a
-      href="https://github.com/flockhopper3/deflock-data"
-      target="_blank"
-      rel="noopener noreferrer">
-      DeFlock Data
-    </a>
 
-    · ©
+    <div class="source-links">
 
-    <a
-      href="https://www.openstreetmap.org/copyright"
-      target="_blank"
-      rel="noopener noreferrer">
-      OpenStreetMap contributors
-    </a>
+      Camera feed:
 
-    (ODbL)
+      <a
+        href="https://github.com/flockhopper3/deflock-data"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        DeFlock Data
+      </a>
+
+      · ©
+
+      <a
+        href="https://www.openstreetmap.org/copyright"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        OpenStreetMap contributors
+      </a>
+
+      (ODbL)
+
+    </div>
 
   </div>
-
-</div>
 
 </div>
 
 </main>
 
-<script src="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js"></script>
+
+<script
+  src="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.js"
+></script>
+
 
 <script>
 
@@ -702,360 +1003,476 @@ const TILEJSON_URL =
 const NOMINATIM_URL =
   "https://nominatim.openstreetmap.org/search";
 
-const SEARCH_RADIUS_MILES = 5;
+const SEARCH_RADIUS_MILES =
+  5;
 
-let searchCenter = null;
-let searchMarker = null;
-let refreshAttempts = 0;
+let searchCenter =
+  null;
+
+let searchMarker =
+  null;
+
+let refreshAttempts =
+  0;
 
 
-/* =========================================================
-   MAP
-========================================================= */
+/*
+=========================================================
+MAP
+=========================================================
+*/
 
-const map = new maplibregl.Map({
+const map =
+  new maplibregl.Map({
 
-  container:"map",
+    container:
+      "map",
 
-  center:[
-    -98.5795,
-    39.8283
-  ],
+    center:[
+      -98.5795,
+      39.8283
+    ],
 
-  zoom:3.4,
+    zoom:
+      3.4,
 
-  attributionControl:false,
+    attributionControl:
+      false,
 
-  style:{
+    style:{
 
-    version:8,
+      version:8,
 
-    sources:{
+      sources:{
 
-      basemap:{
-        type:"raster",
-        tiles:[
-          "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-        ],
-        tileSize:256,
-        attribution:"© OpenStreetMap contributors"
-      },
+        basemap:{
 
-      cameras:{
-        type:"vector",
-        url:TILEJSON_URL
-      },
+          type:"raster",
 
-      searchRadius:{
-        type:"geojson",
-        data:{
-          type:"FeatureCollection",
-          features:[]
-        }
-      }
-
-    },
-
-    layers:[
-
-      {
-        id:"basemap",
-        type:"raster",
-        source:"basemap"
-      },
-
-      {
-        id:"search-radius-fill",
-        type:"fill",
-        source:"searchRadius",
-
-        paint:{
-          "fill-color":"#ff2c98",
-          "fill-opacity":0.055
-        }
-      },
-
-      {
-        id:"search-radius-line",
-        type:"line",
-        source:"searchRadius",
-
-        paint:{
-          "line-color":"#ff2c98",
-          "line-width":2,
-          "line-opacity":0.85,
-          "line-dasharray":[2,2]
-        }
-      },
-
-      {
-        id:"camera-heat",
-        type:"heatmap",
-        source:"cameras",
-        "source-layer":"cameras",
-        maxzoom:10,
-
-        paint:{
-
-          "heatmap-weight":1,
-
-          "heatmap-intensity":[
-            "interpolate",
-            ["linear"],
-            ["zoom"],
-            2,.7,
-            9,1.3
+          tiles:[
+            "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           ],
 
-          "heatmap-radius":[
-            "interpolate",
-            ["linear"],
-            ["zoom"],
-            2,4,
-            9,15
-          ],
+          tileSize:256,
 
-          "heatmap-opacity":[
-            "interpolate",
-            ["linear"],
-            ["zoom"],
-            2,.55,
-            9,.75,
-            10,0
-          ],
+          attribution:
+            "© OpenStreetMap contributors"
 
-          "heatmap-color":[
-            "interpolate",
-            ["linear"],
-            ["heatmap-density"],
-            0,"rgba(0,0,0,0)",
-            .25,"#54204f",
-            .5,"#ff2c98",
-            .75,"#ffe66d",
-            1,"#ffffff"
-          ]
+        },
+
+
+        cameras:{
+
+          type:"vector",
+
+          url:
+            TILEJSON_URL
+
+        },
+
+
+        searchRadius:{
+
+          type:"geojson",
+
+          data:{
+
+            type:
+              "FeatureCollection",
+
+            features:[]
+          }
 
         }
+
       },
 
 
-      /*
-        LARGE INVISIBLE HIT TARGET
+      layers:[
 
-        This is intentionally placed BEFORE the visible dot.
-        It catches finger taps without making the map ugly.
-      */
-
-      {
-        id:"camera-hit-target",
-        type:"circle",
-        source:"cameras",
-        "source-layer":"cameras",
-        minzoom:9.5,
-
-        paint:{
-
-          "circle-radius":[
-            "interpolate",
-            ["linear"],
-            ["zoom"],
-            9.5,16,
-            11,19,
-            14,23
-          ],
-
-          "circle-color":"rgba(255,255,255,0.01)",
-
-          "circle-stroke-width":0
-        }
-      },
+        {
+          id:"basemap",
+          type:"raster",
+          source:"basemap"
+        },
 
 
-      /*
-        VISIBLE CAMERA DOTS
-      */
+        {
+          id:"search-radius-fill",
+          type:"fill",
+          source:"searchRadius",
 
-      {
-        id:"camera-point",
-        type:"circle",
-        source:"cameras",
-        "source-layer":"cameras",
-        minzoom:9.5,
+          paint:{
+            "fill-color":"#ff2c98",
+            "fill-opacity":0.055
+          }
+        },
 
-        paint:{
 
-          "circle-radius":[
-            "interpolate",
-            ["linear"],
-            ["zoom"],
-            9.5,5,
-            11,6.5,
-            14,8.5,
-            17,10
-          ],
+        {
+          id:"search-radius-line",
+          type:"line",
+          source:"searchRadius",
 
-          "circle-color":[
+          paint:{
+            "line-color":"#ff2c98",
+            "line-width":2,
+            "line-opacity":0.85,
+            "line-dasharray":[2,2]
+          }
+        },
 
-            "case",
 
-            [
-              "match",
+        {
+          id:"camera-heat",
+          type:"heatmap",
+          source:"cameras",
+          "source-layer":"cameras",
+          maxzoom:10,
 
-              [
-                "downcase",
-                [
-                  "coalesce",
-                  ["get","brand"],
-                  ""
-                ]
-              ],
+          paint:{
 
-              [
-                "flock",
-                "flock safety"
-              ],
+            "heatmap-weight":
+              1,
 
-              true,
-              false
+            "heatmap-intensity":[
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              2,.7,
+              9,1.3
             ],
 
-            "#64ff8c",
-            "#ff2c98"
+            "heatmap-radius":[
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              2,4,
+              9,15
+            ],
 
-          ],
+            "heatmap-opacity":[
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              2,.55,
+              9,.75,
+              10,0
+            ],
 
-          "circle-stroke-width":[
-            "interpolate",
-            ["linear"],
-            ["zoom"],
-            9.5,1,
-            14,2
-          ],
+            "heatmap-color":[
+              "interpolate",
+              ["linear"],
+              ["heatmap-density"],
+              0,"rgba(0,0,0,0)",
+              .25,"#54204f",
+              .5,"#ff2c98",
+              .75,"#ffe66d",
+              1,"#ffffff"
+            ]
 
-          "circle-stroke-color":"#fff"
+          }
+        },
+
+
+        /*
+        LARGE INVISIBLE TOUCH TARGET
+        */
+
+        {
+          id:"camera-hit-target",
+          type:"circle",
+          source:"cameras",
+          "source-layer":"cameras",
+          minzoom:9.5,
+
+          paint:{
+
+            "circle-radius":[
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              9.5,16,
+              11,19,
+              14,23
+            ],
+
+            "circle-color":
+              "rgba(255,255,255,0.01)",
+
+            "circle-stroke-width":
+              0
+          }
+        },
+
+
+        /*
+        VISIBLE CAMERA DOT
+        */
+
+        {
+          id:"camera-point",
+          type:"circle",
+          source:"cameras",
+          "source-layer":"cameras",
+          minzoom:9.5,
+
+          paint:{
+
+            "circle-radius":[
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              9.5,5,
+              11,6.5,
+              14,8.5,
+              17,10
+            ],
+
+            "circle-color":[
+
+              "case",
+
+              [
+                "match",
+
+                [
+                  "downcase",
+                  [
+                    "coalesce",
+                    ["get","brand"],
+                    ""
+                  ]
+                ],
+
+                [
+                  "flock",
+                  "flock safety"
+                ],
+
+                true,
+                false
+              ],
+
+              "#64ff8c",
+
+              "#ff2c98"
+
+            ],
+
+            "circle-stroke-width":[
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              9.5,1,
+              14,2
+            ],
+
+            "circle-stroke-color":
+              "#fff"
+          }
         }
-      }
 
-    ]
+      ]
 
-  }
+    }
 
-});
+  });
 
 
 map.addControl(
+
   new maplibregl.NavigationControl(),
+
   "top-right"
+
 );
 
 
 map.addControl(
+
   new maplibregl.AttributionControl({
     compact:true
   })
+
 );
 
 
-/* =========================================================
-   DOM
-========================================================= */
+/*
+=========================================================
+DOM
+=========================================================
+*/
 
 const input =
-  document.getElementById("locationInput");
+  document.getElementById(
+    "locationInput"
+  );
 
 const button =
-  document.getElementById("searchButton");
+  document.getElementById(
+    "searchButton"
+  );
 
 const statusBox =
-  document.getElementById("status");
+  document.getElementById(
+    "status"
+  );
 
 const resultsArea =
-  document.getElementById("resultsArea");
+  document.getElementById(
+    "resultsArea"
+  );
 
 const locationName =
-  document.getElementById("locationName");
+  document.getElementById(
+    "locationName"
+  );
 
 const count1 =
-  document.getElementById("count1");
+  document.getElementById(
+    "count1"
+  );
 
 const count3 =
-  document.getElementById("count3");
+  document.getElementById(
+    "count3"
+  );
 
 const count5 =
-  document.getElementById("count5");
+  document.getElementById(
+    "count5"
+  );
 
 const flockCount =
-  document.getElementById("flockCount");
+  document.getElementById(
+    "flockCount"
+  );
 
 const motorolaCount =
-  document.getElementById("motorolaCount");
+  document.getElementById(
+    "motorolaCount"
+  );
 
 const genetecCount =
-  document.getElementById("genetecCount");
+  document.getElementById(
+    "genetecCount"
+  );
 
 const otherCount =
-  document.getElementById("otherCount");
+  document.getElementById(
+    "otherCount"
+  );
 
 const nearest =
-  document.getElementById("nearest");
+  document.getElementById(
+    "nearest"
+  );
 
 const nearestList =
-  document.getElementById("nearestList");
+  document.getElementById(
+    "nearestList"
+  );
 
 
-/* =========================================================
-   GEOCODE
-========================================================= */
+/*
+=========================================================
+GEOCODE
+=========================================================
+*/
 
-async function geocodeLocation(query){
+async function geocodeLocation(
+  query
+) {
 
   const url =
-    new URL(NOMINATIM_URL);
+    new URL(
+      NOMINATIM_URL
+    );
 
-  url.searchParams.set("q",query);
-  url.searchParams.set("format","jsonv2");
-  url.searchParams.set("limit","1");
-  url.searchParams.set("countrycodes","us");
+
+  url.searchParams.set(
+    "q",
+    query
+  );
+
+  url.searchParams.set(
+    "format",
+    "jsonv2"
+  );
+
+  url.searchParams.set(
+    "limit",
+    "1"
+  );
+
+  url.searchParams.set(
+    "countrycodes",
+    "us"
+  );
+
 
   const response =
     await fetch(
+
       url.toString(),
+
       {
         headers:{
-          Accept:"application/json"
+          Accept:
+            "application/json"
         }
       }
+
     );
 
-  if(!response.ok){
+
+  if(
+    !response.ok
+  ) {
+
     throw new Error(
       "Location search failed."
     );
+
   }
+
 
   const results =
     await response.json();
 
-  if(!results.length){
+
+  if(
+    !results.length
+  ) {
+
     throw new Error(
       "Location not found."
     );
+
   }
 
+
   return results[0];
+
 }
 
 
-/* =========================================================
-   SEARCH
-========================================================= */
+/*
+=========================================================
+SEARCH
+=========================================================
+*/
 
-async function searchLocation(){
+async function searchLocation() {
 
   const query =
     input.value.trim();
 
-  if(!query){
+
+  if(
+    !query
+  ) {
 
     statusBox.className =
       "status bad";
@@ -1064,9 +1481,12 @@ async function searchLocation(){
       "Enter an address, city, or ZIP code.";
 
     return;
+
   }
 
-  button.disabled = true;
+
+  button.disabled =
+    true;
 
   button.textContent =
     "SEARCHING...";
@@ -1077,23 +1497,35 @@ async function searchLocation(){
   statusBox.textContent =
     "Looking for the flock... 👀";
 
-  try{
+
+  try {
 
     const result =
-      await geocodeLocation(query);
+      await geocodeLocation(
+        query
+      );
+
 
     const latitude =
-      Number(result.lat);
+      Number(
+        result.lat
+      );
 
     const longitude =
-      Number(result.lon);
+      Number(
+        result.lon
+      );
+
 
     searchCenter = {
       latitude,
       longitude
     };
 
-    refreshAttempts = 0;
+
+    refreshAttempts =
+      0;
+
 
     locationName.textContent =
       result.display_name
@@ -1101,16 +1533,20 @@ async function searchLocation(){
         .slice(0,4)
         .join(",");
 
+
     resetResults();
+
 
     resultsArea.classList.add(
       "visible"
     );
 
+
     updateSearchMap(
       latitude,
       longitude
     );
+
 
     statusBox.className =
       "status";
@@ -1118,10 +1554,12 @@ async function searchLocation(){
     statusBox.textContent =
       "Location found. Loading documented cameras within 5 miles...";
 
+
     map.once(
       "idle",
       refreshNearbyResults
     );
+
 
     window.setTimeout(
       refreshNearbyResults,
@@ -1130,7 +1568,9 @@ async function searchLocation(){
 
   }
 
-  catch(error){
+  catch(
+    error
+  ) {
 
     statusBox.className =
       "status bad";
@@ -1141,31 +1581,44 @@ async function searchLocation(){
 
   }
 
-  finally{
+  finally {
 
-    button.disabled = false;
+    button.disabled =
+      false;
 
     button.textContent =
       "FIND THE FLOCK";
+
   }
+
 }
 
 
-/* =========================================================
-   SEARCH LOCATION + RADIUS
-========================================================= */
+/*
+=========================================================
+SEARCH LOCATION + RADIUS
+=========================================================
+*/
 
 function updateSearchMap(
   latitude,
   longitude
-){
+) {
 
-  if(searchMarker){
+  if(
+    searchMarker
+  ) {
+
     searchMarker.remove();
+
   }
 
+
   const marker =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   marker.style.width =
     "22px";
@@ -1185,45 +1638,50 @@ function updateSearchMap(
   marker.style.boxShadow =
     "0 0 0 3px #ff2c98";
 
+
   searchMarker =
     new maplibregl.Marker({
-      element:marker
+      element:
+        marker
     })
 
-    .setLngLat([
-      longitude,
-      latitude
-    ])
+      .setLngLat([
+        longitude,
+        latitude
+      ])
 
-    .setPopup(
+      .setPopup(
 
-      new maplibregl.Popup({
-        offset:18
-      })
+        new maplibregl.Popup({
+          offset:18
+        })
 
-      .setHTML(`
-        <div class="popup-title">
-          👀 SEARCH LOCATION
-        </div>
+          .setHTML(
+            searchPopupHtml()
+          )
 
-        <div class="popup-row">
-          Five-mile search centered here.
-        </div>
-      `)
+      )
 
-    )
+      .addTo(
+        map
+      );
 
-    .addTo(map);
 
   map
-    .getSource("searchRadius")
+    .getSource(
+      "searchRadius"
+    )
+
     .setData(
+
       createCircle(
         longitude,
         latitude,
         SEARCH_RADIUS_MILES
       )
+
     );
+
 
   map.fitBounds(
 
@@ -1241,29 +1699,48 @@ function updateSearchMap(
         left:28
       },
 
-      maxZoom:11.4,
+      maxZoom:
+        11.4,
 
-      duration:900
+      duration:
+        900
     }
+
   );
+
 }
 
 
-/* =========================================================
-   READ DEFLOCK DATA
-========================================================= */
+/*
+=========================================================
+READ CAMERA DATA
+=========================================================
+*/
 
-function refreshNearbyResults(){
+function refreshNearbyResults() {
 
-  if(!searchCenter){
+  if(
+    !searchCenter
+  ) {
+
     return;
+
   }
 
-  if(!map.isSourceLoaded("cameras")){
+
+  if(
+    !map.isSourceLoaded(
+      "cameras"
+    )
+  ) {
 
     refreshAttempts++;
 
-    if(refreshAttempts < 8){
+
+    if(
+      refreshAttempts <
+      8
+    ) {
 
       statusBox.className =
         "status";
@@ -1271,32 +1748,47 @@ function refreshNearbyResults(){
       statusBox.textContent =
         "Camera data is still loading...";
 
+
       window.setTimeout(
         refreshNearbyResults,
         700
       );
+
     }
 
+
     return;
+
   }
+
 
   let features;
 
-  try{
+
+  try {
 
     features =
       map.querySourceFeatures(
+
         "cameras",
+
         {
-          sourceLayer:"cameras"
+          sourceLayer:
+            "cameras"
         }
+
       );
 
   }
 
-  catch(error){
+  catch(
+    error
+  ) {
 
-    console.error(error);
+    console.error(
+      error
+    );
+
 
     statusBox.className =
       "status bad";
@@ -1305,17 +1797,25 @@ function refreshNearbyResults(){
       "Camera data could not be read. Try the search again.";
 
     return;
+
   }
 
+
   const cameras =
-    dedupeFeatures(features)
+    dedupeFeatures(
+      features
+    )
 
       .map(
         feature =>
-          featureToCamera(feature)
+          featureToCamera(
+            feature
+          )
       )
 
-      .filter(Boolean)
+      .filter(
+        Boolean
+      )
 
       .filter(
         camera =>
@@ -1324,44 +1824,73 @@ function refreshNearbyResults(){
       )
 
       .sort(
-        (a,b) =>
+        (
+          a,
+          b
+        ) =>
           a.distance -
           b.distance
       );
 
-  renderResults(cameras);
+
+  renderResults(
+    cameras
+  );
+
 
   statusBox.className =
     "status good";
 
+
   statusBox.textContent =
     `${cameras.length} documented ALPR camera location${cameras.length === 1 ? "" : "s"} found within 5 miles.`;
+
 }
 
 
-/* =========================================================
-   NORMALIZE CAMERA
-========================================================= */
+/*
+=========================================================
+NORMALIZE CAMERA
+=========================================================
+*/
 
-function featureToCamera(feature){
+function featureToCamera(
+  feature
+) {
 
   const coords =
-    feature.geometry?.coordinates;
+    feature.geometry
+      ?.coordinates;
 
-  if(!coords || coords.length < 2){
+
+  if(
+    !coords ||
+    coords.length <
+    2
+  ) {
+
     return null;
+
   }
 
+
   const longitude =
-    Number(coords[0]);
+    Number(
+      coords[0]
+    );
 
   const latitude =
-    Number(coords[1]);
+    Number(
+      coords[1]
+    );
+
 
   const props =
-    feature.properties || {};
+    feature.properties ||
+    {};
 
-  return{
+
+  return {
 
     longitude,
 
@@ -1369,10 +1898,15 @@ function featureToCamera(feature){
 
     distance:
       milesBetween(
+
         searchCenter.latitude,
+
         searchCenter.longitude,
+
         latitude,
+
         longitude
+
       ),
 
     brand:
@@ -1400,180 +1934,230 @@ function featureToCamera(feature){
       props.osm_type ||
       props.osmType ||
       "node"
+
   };
+
 }
 
 
-/* =========================================================
-   RESULTS
-========================================================= */
+/*
+=========================================================
+RESULT COUNTS
+=========================================================
+*/
 
-function renderResults(cameras){
+function renderResults(
+  cameras
+) {
 
   const within1 =
     cameras.filter(
-      c => c.distance <= 1
+      camera =>
+        camera.distance <=
+        1
     ).length;
+
 
   const within3 =
     cameras.filter(
-      c => c.distance <= 3
+      camera =>
+        camera.distance <=
+        3
     ).length;
+
 
   const within5 =
     cameras.length;
 
+
   const flock =
     cameras.filter(
-      c =>
-        c.brand ===
+      camera =>
+        camera.brand ===
         "Flock Safety"
     ).length;
 
+
   const motorola =
     cameras.filter(
-      c =>
-        c.brand ===
+      camera =>
+        camera.brand ===
         "Motorola Solutions"
     ).length;
 
+
   const genetec =
     cameras.filter(
-      c =>
-        c.brand ===
+      camera =>
+        camera.brand ===
         "Genetec"
     ).length;
 
+
   const other =
     Math.max(
+
       0,
+
       within5 -
       flock -
       motorola -
       genetec
+
     );
 
-  count1.textContent = within1;
-  count3.textContent = within3;
-  count5.textContent = within5;
 
-  flockCount.textContent = flock;
-  motorolaCount.textContent = motorola;
-  genetecCount.textContent = genetec;
-  otherCount.textContent = other;
+  count1.textContent =
+    within1;
 
-  renderNearest(cameras);
+  count3.textContent =
+    within3;
+
+  count5.textContent =
+    within5;
+
+  flockCount.textContent =
+    flock;
+
+  motorolaCount.textContent =
+    motorola;
+
+  genetecCount.textContent =
+    genetec;
+
+  otherCount.textContent =
+    other;
+
+
+  renderNearest(
+    cameras
+  );
+
 }
 
 
-/* =========================================================
-   NEAREST LIST
-========================================================= */
+/*
+=========================================================
+NEAREST LIST
+=========================================================
+*/
 
-function renderNearest(cameras){
+function renderNearest(
+  cameras
+) {
 
-  nearestList.innerHTML = "";
+  nearestList.innerHTML =
+    "";
 
-  if(!cameras.length){
+
+  if(
+    !cameras.length
+  ) {
 
     nearest.classList.remove(
       "visible"
     );
 
     return;
+
   }
 
+
   cameras
-    .slice(0,8)
-    .forEach(camera => {
+    .slice(
+      0,
+      8
+    )
 
-      const item =
-        document.createElement("li");
+    .forEach(
+      camera => {
 
-      item.className =
-        "nearest-item";
+        const item =
+          document.createElement(
+            "li"
+          );
 
-      const direction =
-        directionLabel(
-          camera.direction
-        );
 
-      const sourceUrl =
-        buildOsmUrl(camera);
+        item.className =
+          "nearest-item";
 
-      item.innerHTML = `
-        <div>
 
-          <div class="nearest-brand">
-            ${escapeHtml(camera.brand)}
-          </div>
+        const direction =
+          directionLabel(
+            camera.direction
+          );
 
-          <div class="nearest-meta">
 
-            ${
-              direction
-                ? `Facing: ${escapeHtml(direction)}`
-                : "Direction not documented"
-            }
+        item.innerHTML =
+          `
+            <div>
 
-            <br>
+              <div class="nearest-brand">
+                ${escapeHtml(camera.brand)}
+              </div>
 
-            Operator:
-            ${escapeHtml(camera.operator)}
+              <div class="nearest-meta">
 
-            ${
-              sourceUrl
-                ? `
-                  <br>
+                ${
+                  direction
+                    ? `Facing: ${escapeHtml(direction)}`
+                    : "Direction not documented"
+                }
 
-                  <a
-                    class="source-link"
-                    href="${escapeHtml(sourceUrl)}"
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    VIEW PUBLIC SOURCE ↗
-                  </a>
-                `
-                : ""
-            }
+                <br>
 
-          </div>
+                Operator:
+                ${escapeHtml(camera.operator)}
 
-        </div>
+              </div>
 
-        <div class="nearest-distance">
-          ${formatDistance(camera.distance)}
-        </div>
-      `;
+            </div>
 
-      item.addEventListener(
-        "click",
-        event => {
+            <div class="nearest-distance">
+              ${formatDistance(camera.distance)}
+            </div>
+          `;
 
-          if(
-            event.target.closest("a")
-          ){
-            return;
+
+        item.addEventListener(
+
+          "click",
+
+          () => {
+
+            focusCamera(
+              camera
+            );
+
           }
 
-          focusCamera(camera);
-        }
-      );
+        );
 
-      nearestList.appendChild(item);
-    });
+
+        nearestList.appendChild(
+          item
+        );
+
+      }
+    );
+
 
   nearest.classList.add(
     "visible"
   );
+
 }
 
 
-/* =========================================================
-   CAMERA FOCUS
-========================================================= */
+/*
+=========================================================
+CAMERA FOCUS
+=========================================================
+*/
 
-function focusCamera(camera){
+function focusCamera(
+  camera
+) {
 
   map.flyTo({
 
@@ -1582,55 +2166,91 @@ function focusCamera(camera){
       camera.latitude
     ],
 
-    zoom:15.5,
+    zoom:
+      15.5,
 
-    speed:1.45,
+    speed:
+      1.45,
 
-    essential:true
+    essential:
+      true
+
   });
 
+
   new maplibregl.Popup({
-    closeButton:true,
-    maxWidth:"300px"
+
+    closeButton:
+      true,
+
+    closeOnClick:
+      true,
+
+    offset:
+      18
+
   })
 
-  .setLngLat([
-    camera.longitude,
-    camera.latitude
-  ])
+    .setLngLat([
+      camera.longitude,
+      camera.latitude
+    ])
 
-  .setHTML(
-    resultPopupHtml(camera)
-  )
+    .setHTML(
+      resultPopupHtml(
+        camera
+      )
+    )
 
-  .addTo(map);
+    .addTo(
+      map
+    );
+
 }
 
 
-/* =========================================================
-   MAP TAP
+/*
+=========================================================
+MAP TOUCH
+=========================================================
+*/
 
-   Both the visible layer and large invisible layer
-   use the same handler.
-========================================================= */
-
-function handleCameraTap(event){
+function handleCameraTap(
+  event
+) {
 
   const feature =
     event.features?.[0];
 
-  if(!feature){
+
+  if(
+    !feature
+  ) {
+
     return;
+
   }
+
 
   const camera =
-    cameraFromMapFeature(feature);
+    cameraFromMapFeature(
+      feature
+    );
 
-  if(!camera){
+
+  if(
+    !camera
+  ) {
+
     return;
+
   }
 
-  focusCamera(camera);
+
+  focusCamera(
+    camera
+  );
+
 }
 
 
@@ -1652,8 +2272,10 @@ map.on(
   "mouseenter",
   "camera-hit-target",
   () => {
+
     map.getCanvas().style.cursor =
       "pointer";
+
   }
 );
 
@@ -1662,35 +2284,55 @@ map.on(
   "mouseleave",
   "camera-hit-target",
   () => {
+
     map.getCanvas().style.cursor =
       "";
+
   }
 );
 
 
-/* =========================================================
-   MAP FEATURE → CAMERA
-========================================================= */
+/*
+=========================================================
+FEATURE → CAMERA
+=========================================================
+*/
 
-function cameraFromMapFeature(feature){
+function cameraFromMapFeature(
+  feature
+) {
 
   const coords =
-    feature.geometry?.coordinates;
+    feature.geometry
+      ?.coordinates;
 
-  if(!coords){
+
+  if(
+    !coords
+  ) {
+
     return null;
+
   }
 
+
   const props =
-    feature.properties || {};
+    feature.properties ||
+    {};
+
 
   const longitude =
-    Number(coords[0]);
+    Number(
+      coords[0]
+    );
 
   const latitude =
-    Number(coords[1]);
+    Number(
+      coords[1]
+    );
 
-  return{
+
+  return {
 
     longitude,
 
@@ -1724,22 +2366,76 @@ function cameraFromMapFeature(feature){
 
     distance:
       searchCenter
+
         ? milesBetween(
+
             searchCenter.latitude,
+
             searchCenter.longitude,
+
             latitude,
+
             longitude
+
           )
+
         : null
+
   };
+
 }
 
 
-/* =========================================================
-   POPUP
-========================================================= */
+/*
+=========================================================
+POPUP HTML
+=========================================================
+*/
 
-function resultPopupHtml(camera){
+function searchPopupHtml() {
+
+  return (
+    `
+      <div class="camera-card">
+
+        <div class="camera-card-head">
+
+          <div class="camera-card-kicker">
+            SEARCH CENTER
+          </div>
+
+          <div class="camera-card-brand">
+            👀 YOU ARE HERE
+          </div>
+
+        </div>
+
+        <div class="camera-card-body">
+
+          <div class="camera-detail">
+
+            <div class="camera-detail-label">
+              Radius
+            </div>
+
+            <div class="camera-detail-value">
+              5 miles
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    `
+  );
+
+}
+
+
+function resultPopupHtml(
+  camera
+) {
 
   const direction =
     directionLabel(
@@ -1747,101 +2443,178 @@ function resultPopupHtml(camera){
     ) ||
     "Not documented";
 
+
   const sourceUrl =
-    buildOsmUrl(camera);
+    buildOsmUrl(
+      camera
+    );
 
-  return `
-    <div class="popup-title">
-      👀 CAMERA SPOTTED
-    </div>
 
-    <div class="popup-row">
-      <strong>Brand:</strong>
-      ${escapeHtml(camera.brand)}
-    </div>
+  return (
+    `
+      <div class="camera-card">
 
-    <div class="popup-row">
-      <strong>Operator:</strong>
-      ${escapeHtml(camera.operator)}
-    </div>
+        <div class="camera-card-head">
 
-    <div class="popup-row">
-      <strong>Facing:</strong>
-      ${escapeHtml(direction)}
-    </div>
-
-    ${
-      camera.distance !== null &&
-      camera.distance !== undefined
-        ? `
-          <div class="popup-row">
-            <strong>Distance:</strong>
-            ${escapeHtml(formatDistance(camera.distance))}
+          <div class="camera-card-kicker">
+            👀 CAMERA SPOTTED
           </div>
-        `
-        : ""
-    }
 
-    ${
-      sourceUrl
-        ? `
-          <div class="popup-row">
+          <div class="camera-card-brand">
+            ${escapeHtml(camera.brand)}
+          </div>
 
-            <a
-              class="source-link"
-              href="${escapeHtml(sourceUrl)}"
-              target="_blank"
-              rel="noopener noreferrer">
-              VIEW PUBLIC SOURCE ↗
-            </a>
+        </div>
+
+
+        <div class="camera-card-body">
+
+          <div class="camera-detail">
+
+            <div class="camera-detail-label">
+              Operator
+            </div>
+
+            <div class="camera-detail-value">
+              ${escapeHtml(camera.operator)}
+            </div>
 
           </div>
-        `
-        : ""
-    }
-  `;
+
+
+          <div class="camera-detail">
+
+            <div class="camera-detail-label">
+              Facing
+            </div>
+
+            <div class="camera-detail-value">
+              ${escapeHtml(direction)}
+            </div>
+
+          </div>
+
+
+          ${
+            camera.distance !== null &&
+            camera.distance !== undefined
+
+              ? `
+                <div class="camera-detail">
+
+                  <div class="camera-detail-label">
+                    Distance
+                  </div>
+
+                  <div class="camera-detail-value distance">
+                    ${escapeHtml(formatDistance(camera.distance))}
+                  </div>
+
+                </div>
+              `
+
+              : ""
+          }
+
+
+          ${
+            sourceUrl
+
+              ? `
+                <a
+                  class="camera-source"
+                  href="${escapeHtml(sourceUrl)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  VIEW PUBLIC SOURCE ↗
+                </a>
+              `
+
+              : ""
+          }
+
+        </div>
+
+      </div>
+    `
+  );
+
 }
 
 
-/* =========================================================
-   HELPERS
-========================================================= */
+/*
+=========================================================
+HELPERS
+=========================================================
+*/
 
-function resetResults(){
+function resetResults() {
 
-  count1.textContent = "…";
-  count3.textContent = "…";
-  count5.textContent = "…";
+  count1.textContent =
+    "…";
 
-  flockCount.textContent = "…";
-  motorolaCount.textContent = "…";
-  genetecCount.textContent = "…";
-  otherCount.textContent = "…";
+  count3.textContent =
+    "…";
+
+  count5.textContent =
+    "…";
+
+  flockCount.textContent =
+    "…";
+
+  motorolaCount.textContent =
+    "…";
+
+  genetecCount.textContent =
+    "…";
+
+  otherCount.textContent =
+    "…";
+
 
   nearest.classList.remove(
     "visible"
   );
+
 }
 
 
-function dedupeFeatures(features){
+function dedupeFeatures(
+  features
+) {
 
   const seen =
     new Set();
 
-  const output = [];
 
-  for(const feature of features){
+  const output =
+    [];
+
+
+  for(
+    const feature
+    of features
+  ) {
 
     const coords =
-      feature.geometry?.coordinates;
+      feature.geometry
+        ?.coordinates;
 
-    if(!coords){
+
+    if(
+      !coords
+    ) {
+
       continue;
+
     }
 
+
     const props =
-      feature.properties || {};
+      feature.properties ||
+      {};
+
 
     const key = [
 
@@ -1849,89 +2622,171 @@ function dedupeFeatures(features){
       props.id ||
       "",
 
-      Number(coords[0]).toFixed(6),
+      Number(
+        coords[0]
+      ).toFixed(6),
 
-      Number(coords[1]).toFixed(6),
+      Number(
+        coords[1]
+      ).toFixed(6),
 
-      props.brand || "",
+      props.brand ||
+      "",
 
-      props.direction || ""
+      props.direction ||
+      ""
 
-    ].join("|");
+    ].join(
+      "|"
+    );
 
-    if(seen.has(key)){
+
+    if(
+      seen.has(
+        key
+      )
+    ) {
+
       continue;
+
     }
 
-    seen.add(key);
 
-    output.push(feature);
+    seen.add(
+      key
+    );
+
+
+    output.push(
+      feature
+    );
+
   }
 
+
   return output;
+
 }
 
 
-function normalizeBrand(brand){
+function normalizeBrand(
+  brand
+) {
 
   const value =
     String(
-      brand || ""
+      brand ||
+      ""
     ).trim();
+
 
   const lower =
     value.toLowerCase();
 
+
   if(
-    lower === "flock" ||
-    lower.includes("flock safety")
-  ){
+    lower ===
+    "flock" ||
+
+    lower.includes(
+      "flock safety"
+    )
+  ) {
+
     return "Flock Safety";
+
   }
 
+
   if(
-    lower.includes("motorola") ||
-    lower.includes("vigilant")
-  ){
+    lower.includes(
+      "motorola"
+    ) ||
+
+    lower.includes(
+      "vigilant"
+    )
+  ) {
+
     return "Motorola Solutions";
+
   }
+
 
   if(
-    lower.includes("genetec")
-  ){
+    lower.includes(
+      "genetec"
+    )
+  ) {
+
     return "Genetec";
+
   }
 
-  return(
+
+  return (
     value ||
     "Unknown / undocumented"
   );
+
 }
 
 
-function directionLabel(direction){
+function directionLabel(
+  direction
+) {
 
   if(
     direction === null ||
     direction === undefined ||
     direction === ""
-  ){
+  ) {
+
     return "";
+
   }
+
 
   const number =
     Number(
-      String(direction)
-        .replace("°","")
+
+      String(
+        direction
+      )
+
+        .replace(
+          "°",
+          ""
+        )
+
         .trim()
+
     );
 
-  if(Number.isNaN(number)){
-    return String(direction);
+
+  if(
+    Number.isNaN(
+      number
+    )
+  ) {
+
+    return String(
+      direction
+    );
+
   }
 
+
   const degrees =
-    ((number % 360) + 360) % 360;
+    (
+      (
+        number %
+        360
+      ) +
+      360
+    ) %
+    360;
+
 
   const compass = [
     "N",
@@ -1952,14 +2807,19 @@ function directionLabel(direction){
     "NNW"
   ];
 
+
   const index =
     Math.round(
-      degrees / 22.5
-    ) % 16;
+      degrees /
+      22.5
+    ) %
+    16;
 
-  return(
+
+  return (
     `${Math.round(degrees)}° (${compass[index]})`
   );
+
 }
 
 
@@ -1968,27 +2828,51 @@ function milesBetween(
   lon1,
   lat2,
   lon2
-){
+) {
 
   const radius =
     3958.7613;
 
+
   const dLat =
-    radians(lat2-lat1);
+    radians(
+      lat2 -
+      lat1
+    );
+
 
   const dLon =
-    radians(lon2-lon1);
+    radians(
+      lon2 -
+      lon1
+    );
+
 
   const a =
-    Math.sin(dLat/2) ** 2 +
+    Math.sin(
+      dLat /
+      2
+    ) ** 2 +
 
-    Math.cos(radians(lat1)) *
+    Math.cos(
+      radians(
+        lat1
+      )
+    ) *
 
-    Math.cos(radians(lat2)) *
+    Math.cos(
+      radians(
+        lat2
+      )
+    ) *
 
-    Math.sin(dLon/2) ** 2;
+    Math.sin(
+      dLon /
+      2
+    ) ** 2;
 
-  return(
+
+  return (
     radius *
     2 *
     Math.atan2(
@@ -1996,39 +2880,58 @@ function milesBetween(
       Math.sqrt(1-a)
     )
   );
+
 }
 
 
-function radians(degrees){
+function radians(
+  degrees
+) {
 
-  return(
+  return (
     degrees *
     Math.PI /
     180
   );
+
 }
 
 
-function formatDistance(miles){
+function formatDistance(
+  miles
+) {
 
-  if(miles < .1){
+  if(
+    miles <
+    .1
+  ) {
 
-    return(
-      `${Math.round(miles*5280)} ft`
+    return (
+      `${Math.round(miles * 5280)} ft`
     );
+
   }
 
-  return(
+
+  return (
     `${miles.toFixed(2)} mi`
   );
+
 }
 
 
-function buildOsmUrl(camera){
+function buildOsmUrl(
+  camera
+) {
 
-  if(!camera.osmId){
+  if(
+    !camera.osmId
+  ) {
+
     return "";
+
   }
+
 
   let type =
     String(
@@ -2036,19 +2939,27 @@ function buildOsmUrl(camera){
       "node"
     ).toLowerCase();
 
+
   if(
     ![
       "node",
       "way",
       "relation"
-    ].includes(type)
-  ){
-    type = "node";
+    ].includes(
+      type
+    )
+  ) {
+
+    type =
+      "node";
+
   }
 
-  return(
+
+  return (
     `https://www.openstreetmap.org/${type}/${camera.osmId}`
   );
+
 }
 
 
@@ -2056,32 +2967,45 @@ function radiusBounds(
   latitude,
   longitude,
   miles
-){
+) {
 
   const latDelta =
-    miles / 69;
+    miles /
+    69;
+
 
   const lonDelta =
     miles /
     (
       69 *
       Math.cos(
-        radians(latitude)
+        radians(
+          latitude
+        )
       )
     );
 
-  return[
+
+  return [
 
     [
-      longitude-lonDelta,
-      latitude-latDelta
+      longitude -
+      lonDelta,
+
+      latitude -
+      latDelta
     ],
 
     [
-      longitude+lonDelta,
-      latitude+latDelta
+      longitude +
+      lonDelta,
+
+      latitude +
+      latDelta
     ]
+
   ];
+
 }
 
 
@@ -2089,119 +3013,220 @@ function createCircle(
   longitude,
   latitude,
   radiusMiles
-){
+) {
 
-  const points = 96;
+  const points =
+    96;
 
-  const coordinates = [];
+
+  const coordinates =
+    [];
+
 
   const earthRadiusMiles =
     3958.7613;
+
 
   const angularDistance =
     radiusMiles /
     earthRadiusMiles;
 
+
   const lat1 =
-    radians(latitude);
+    radians(
+      latitude
+    );
+
 
   const lon1 =
-    radians(longitude);
+    radians(
+      longitude
+    );
+
 
   for(
-    let i=0;
-    i<=points;
+    let i =
+      0;
+
+    i <=
+      points;
+
     i++
-  ){
+  ) {
 
     const bearing =
-      (i/points) *
+      (
+        i /
+        points
+      ) *
       Math.PI *
       2;
+
 
     const lat2 =
       Math.asin(
 
-        Math.sin(lat1) *
-        Math.cos(angularDistance) +
+        Math.sin(
+          lat1
+        ) *
 
-        Math.cos(lat1) *
-        Math.sin(angularDistance) *
-        Math.cos(bearing)
+        Math.cos(
+          angularDistance
+        ) +
+
+        Math.cos(
+          lat1
+        ) *
+
+        Math.sin(
+          angularDistance
+        ) *
+
+        Math.cos(
+          bearing
+        )
+
       );
+
 
     const lon2 =
       lon1 +
 
       Math.atan2(
 
-        Math.sin(bearing) *
-        Math.sin(angularDistance) *
-        Math.cos(lat1),
+        Math.sin(
+          bearing
+        ) *
 
-        Math.cos(angularDistance) -
-        Math.sin(lat1) *
-        Math.sin(lat2)
+        Math.sin(
+          angularDistance
+        ) *
+
+        Math.cos(
+          lat1
+        ),
+
+        Math.cos(
+          angularDistance
+        ) -
+
+        Math.sin(
+          lat1
+        ) *
+
+        Math.sin(
+          lat2
+        )
+
       );
 
+
     coordinates.push([
-      lon2 * 180 / Math.PI,
-      lat2 * 180 / Math.PI
+      lon2 *
+      180 /
+      Math.PI,
+
+      lat2 *
+      180 /
+      Math.PI
     ]);
+
   }
 
-  return{
 
-    type:"Feature",
+  return {
+
+    type:
+      "Feature",
 
     properties:{
       radiusMiles
     },
 
     geometry:{
-      type:"Polygon",
+
+      type:
+        "Polygon",
+
       coordinates:[
         coordinates
       ]
+
     }
+
   };
+
 }
 
 
-function escapeHtml(value){
+function escapeHtml(
+  value
+) {
 
-  return String(value)
+  return String(
+    value
+  )
 
-    .replaceAll("&","&amp;")
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
 
-    .replaceAll("<","&lt;")
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
 
-    .replaceAll(">","&gt;")
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
 
-    .replaceAll('"',"&quot;")
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
 
-    .replaceAll("'","&#039;");
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
 }
 
 
-/* =========================================================
-   EVENTS
-========================================================= */
+/*
+=========================================================
+EVENTS
+=========================================================
+*/
 
 button.addEventListener(
+
   "click",
+
   searchLocation
+
 );
 
 
 input.addEventListener(
+
   "keydown",
+
   event => {
 
-    if(event.key === "Enter"){
+    if(
+      event.key ===
+      "Enter"
+    ) {
+
       searchLocation();
+
     }
+
   }
+
 );
 
 </script>
