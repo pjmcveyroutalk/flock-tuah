@@ -32,6 +32,10 @@
       --yellow:#ffe66d;
       --paper:#efefdf;
       --stamp:#c40000;
+
+      --radius-sm:10px;
+      --radius:14px;
+      --radius-lg:18px;
     }
 
     *{
@@ -46,10 +50,19 @@
       margin:0;
       color:var(--text);
       font-family:Arial,Helvetica,sans-serif;
+
       background:
-        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),
+        linear-gradient(
+          rgba(255,255,255,.025) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,.025) 1px,
+          transparent 1px
+        ),
         var(--bg);
+
       background-size:32px 32px;
     }
 
@@ -107,8 +120,9 @@
     .nav-watch{
       color:var(--green);
       border:1px solid var(--green);
-      padding:8px 10px;
+      padding:8px 11px;
       background:#0b120d;
+      border-radius:var(--radius-sm);
     }
 
     .hero{
@@ -129,7 +143,7 @@
       display:block;
       margin:0 auto;
       border:3px solid white;
-      border-radius:18px;
+      border-radius:var(--radius-lg);
       box-shadow:9px 9px 0 var(--pink);
     }
 
@@ -148,7 +162,7 @@
     .watch-strip{
       width:min(720px,100%);
       margin:20px auto 0;
-      padding:12px 14px;
+      padding:13px 14px;
       border:1px solid #2e5c39;
       background:#0c110d;
       display:flex;
@@ -156,6 +170,7 @@
       justify-content:space-between;
       gap:12px;
       text-align:left;
+      border-radius:var(--radius);
     }
 
     .watch-strip-copy{
@@ -193,6 +208,7 @@
       align-items:center;
       justify-content:center;
       white-space:nowrap;
+      border-radius:var(--radius-sm);
     }
 
     .hero-actions{
@@ -221,6 +237,7 @@
       justify-content:center;
       text-align:center;
       font-size:13px;
+      border-radius:var(--radius);
     }
 
     .btn.alt{
@@ -262,6 +279,7 @@
       padding:12px;
       font-family:monospace;
       font-size:12px;
+      border-radius:var(--radius-sm);
     }
 
     .stat strong{
@@ -309,7 +327,11 @@
 
     .watch-section{
       background:
-        radial-gradient(circle at 90% 10%,rgba(255,44,152,.08),transparent 32%),
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(255,44,152,.08),
+          transparent 32%
+        ),
         #090909;
     }
 
@@ -330,6 +352,7 @@
       display:flex;
       align-items:center;
       gap:12px;
+      border-radius:var(--radius);
     }
 
     .watch-point strong{
@@ -352,6 +375,10 @@
       margin-top:20px;
     }
 
+    /*
+      Keep the government/case-file joke more angular.
+    */
+
     .case-file{
       max-width:680px;
       background:var(--paper);
@@ -359,6 +386,7 @@
       padding:20px;
       border:2px solid #ddd;
       box-shadow:8px 8px 0 #333;
+      border-radius:4px;
     }
 
     .case-title{
@@ -400,6 +428,7 @@
       border:1px solid var(--line);
       background:var(--panel);
       padding:18px;
+      border-radius:var(--radius);
     }
 
     .road-number{
@@ -433,6 +462,7 @@
       padding:17px;
       border:1px solid var(--line);
       background:var(--panel);
+      border-radius:var(--radius);
     }
 
     .how-step::before{
@@ -454,6 +484,7 @@
       background:#0d0d0d;
       padding:18px;
       font-family:monospace;
+      border-radius:var(--radius);
     }
 
     .record{
@@ -483,6 +514,7 @@
       border-left:5px solid var(--yellow);
       background:#17150c;
       line-height:1.5;
+      border-radius:0 var(--radius) var(--radius) 0;
     }
 
     footer{
@@ -512,6 +544,7 @@
     }
 
     @media(min-width:760px){
+
       .hero{
         padding-top:60px;
       }
@@ -534,6 +567,7 @@
     }
 
     @media(max-width:700px){
+
       .nav-links a:not(.nav-watch){
         display:none;
       }
@@ -553,12 +587,13 @@
     }
 
     @media(max-width:580px){
+
       .hero{
         padding-top:28px;
       }
 
       .hero-art{
-        border-radius:14px;
+        border-radius:var(--radius);
         box-shadow:7px 7px 0 var(--pink);
       }
 
