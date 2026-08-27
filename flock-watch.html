@@ -11,11 +11,12 @@
     content="Search an address, city, or ZIP code and explore documented Flock Safety and ALPR camera locations near you."
   />
 
+  <!-- DEV BRANCH ONLY -->
   <meta name="robots" content="noindex,nofollow" />
 
   <link
-    href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css"
     rel="stylesheet"
+    href="https://unpkg.com/maplibre-gl@5.6.1/dist/maplibre-gl.css"
   />
 
   <style>
@@ -76,7 +77,7 @@
 
     header {
       border-bottom:1px solid var(--line);
-      background:rgba(7,7,7,.95);
+      background:rgba(7,7,7,.96);
     }
 
     .header-inner {
@@ -136,7 +137,7 @@
       font-weight:800;
     }
 
-    .tagline .pink {
+    .pink {
       color:var(--pink);
     }
 
@@ -194,7 +195,7 @@
     }
 
     button:disabled {
-      opacity:.5;
+      opacity:.55;
       cursor:wait;
     }
 
@@ -273,10 +274,6 @@
       gap:8px;
     }
 
-    .manufacturer-card {
-      min-width:0;
-    }
-
     .manufacturer-card strong {
       display:block;
       font-size:20px;
@@ -318,7 +315,7 @@
     }
 
     .nearest-item {
-      padding:12px 14px;
+      padding:13px 14px;
       display:grid;
       grid-template-columns:1fr auto;
       gap:12px;
@@ -330,20 +327,16 @@
       border-bottom:0;
     }
 
-    .nearest-item:active {
-      background:#191919;
-    }
-
     .nearest-brand {
       font-weight:900;
-      font-size:13px;
+      font-size:14px;
     }
 
     .nearest-meta {
       margin-top:4px;
       color:var(--muted);
       font-size:11px;
-      line-height:1.45;
+      line-height:1.5;
     }
 
     .nearest-distance {
@@ -351,6 +344,14 @@
       font-weight:900;
       white-space:nowrap;
       font-size:13px;
+    }
+
+    .source-link {
+      display:inline-block;
+      margin-top:5px;
+      color:var(--pink);
+      font-size:11px;
+      font-weight:800;
     }
 
     .map-shell {
@@ -383,7 +384,6 @@
       flex-wrap:wrap;
       gap:12px;
       margin-top:10px;
-      color:#ddd;
       font-size:11px;
     }
 
@@ -400,6 +400,10 @@
       border:1px solid white;
     }
 
+    .legend-dot.you {
+      background:white;
+    }
+
     .legend-dot.green {
       background:var(--green);
     }
@@ -410,8 +414,8 @@
 
     #map {
       width:100%;
-      height:min(56vh,570px);
-      min-height:380px;
+      height:min(58vh,590px);
+      min-height:390px;
       background:#111;
     }
 
@@ -463,10 +467,6 @@
       font-size:12px;
     }
 
-    .maplibregl-ctrl-attrib {
-      font-size:10px;
-    }
-
     @media (max-width:700px) {
       .search-row {
         grid-template-columns:1fr;
@@ -482,10 +482,6 @@
     }
 
     @media (max-width:430px) {
-      .radius-grid {
-        grid-template-columns:repeat(3,1fr);
-      }
-
       .summary-card {
         padding:10px 7px;
       }
@@ -494,17 +490,13 @@
         font-size:21px;
       }
 
-      .manufacturer-grid {
-        grid-template-columns:1fr 1fr;
-      }
-
       .nearest-item {
         grid-template-columns:1fr;
       }
 
       #map {
-        height:53vh;
-        min-height:375px;
+        height:54vh;
+        min-height:380px;
       }
     }
   </style>
@@ -519,10 +511,7 @@
       FLOCK <span>TUAH</span>
     </div>
 
-    <a
-      class="back-link"
-      href="/"
-    >
+    <a class="back-link" href="/">
       ← BACK TO FLOCKTUAH.COM
     </a>
 
@@ -545,14 +534,12 @@
     </h1>
 
     <p class="tagline">
-
       Search an address, city, or ZIP code and explore
       documented automated license plate reader cameras nearby.
 
       <span class="pink">
         The flock really is always watching. 👀
       </span>
-
     </p>
 
     <div class="search-panel">
@@ -579,10 +566,7 @@
 
       </div>
 
-      <div
-        id="status"
-        class="status"
-      >
+      <div id="status" class="status">
         Enter a location to begin.
       </div>
 
@@ -592,15 +576,8 @@
       >
 
         <div class="location-card">
-
-          <small>
-            SEARCH LOCATION
-          </small>
-
-          <strong id="locationName">
-            —
-          </strong>
-
+          <small>SEARCH LOCATION</small>
+          <strong id="locationName">—</strong>
         </div>
 
         <div class="radius-grid">
@@ -679,15 +656,20 @@
     </strong>
 
     <span>
-      Tap a camera marker for available manufacturer,
-      operator and direction information.
+      The white point is your searched location.
+      The pink boundary represents five miles.
     </span>
 
     <div class="legend">
 
       <span class="legend-item">
+        <i class="legend-dot you"></i>
+        Search location
+      </span>
+
+      <span class="legend-item">
         <i class="legend-dot green"></i>
-        Identified Flock Safety
+        Flock Safety
       </span>
 
       <span class="legend-item">
@@ -707,28 +689,35 @@
 
   <div class="notice">
 
-    <strong>
-      IMPORTANT:
-    </strong>
+    <strong>IMPORTANT:</strong>
 
-    Camera locations shown here come from independent,
-    crowdsourced public mapping data.
+    Results are based on independent, crowdsourced public
+    mapping records.
 
-    The map is not affiliated with Flock Safety,
-    Motorola Solutions, Genetec, law enforcement,
-    OpenStreetMap or the DeFlock project.
+    They are not an official or complete registry of every
+    ALPR deployment.
 
-    Locations may be incomplete, outdated, moved,
-    removed or incorrectly identified.
+    Cameras can be added, moved, removed, mislabeled,
+    or missing from the dataset.
 
-    Absence of a marker does
+    Absence of a mapped camera does
     <strong>not</strong>
-    mean an area has no ALPR cameras.
+    mean an area is camera-free.
 
     <div class="source-links">
 
-      Camera data:
+      Camera records:
+      <a
+        href="https://www.openstreetmap.org"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        OpenStreetMap
+      </a>
 
+      ·
+
+      Map feed:
       <a
         href="https://github.com/flockhopper3/deflock-data"
         target="_blank"
@@ -737,19 +726,7 @@
         DeFlock Data
       </a>
 
-      ·
-
-      ©
-
-      <a
-        href="https://www.openstreetmap.org/copyright"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        OpenStreetMap contributors
-      </a>
-
-      (ODbL)
+      · ODbL
 
     </div>
 
@@ -771,62 +748,71 @@ const TILEJSON_URL =
 const NOMINATIM_URL =
   "https://nominatim.openstreetmap.org/search";
 
-const DEFAULT_CENTER =
-  [-98.5795,39.8283];
+const OVERPASS_URL =
+  "https://overpass-api.de/api/interpreter";
 
-const DEFAULT_ZOOM =
-  3.4;
+const SEARCH_RADIUS_MILES =
+  5;
+
+const SEARCH_RADIUS_METERS =
+  8046.72;
 
 let searchCenter =
   null;
 
-let refreshTimer =
+let searchMarker =
   null;
 
+let currentResults =
+  [];
+
+
+/*
+============================================================
+MAP
+============================================================
+*/
 
 const map =
   new maplibregl.Map({
 
-    container:
-      "map",
+    container:"map",
 
-    center:
-      DEFAULT_CENTER,
+    center:[
+      -98.5795,
+      39.8283
+    ],
 
-    zoom:
-      DEFAULT_ZOOM,
+    zoom:3.4,
 
-    attributionControl:
-      false,
+    attributionControl:false,
 
-    style: {
+    style:{
 
       version:8,
 
-      sources: {
+      sources:{
 
-        basemap: {
-
+        basemap:{
           type:"raster",
-
           tiles:[
             "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           ],
-
           tileSize:256,
-
-          attribution:
-            "© OpenStreetMap contributors"
-
+          attribution:"© OpenStreetMap contributors"
         },
 
-        cameras: {
-
+        cameras:{
           type:"vector",
+          url:TILEJSON_URL
+        },
 
-          url:
-            TILEJSON_URL
-
+        searchRadius:{
+          type:"geojson",
+          data:{
+            type:"FeatureCollection",
+            features:[]
+          }
         }
 
       },
@@ -840,16 +826,42 @@ const map =
         },
 
         {
+          id:"search-radius-fill",
+          type:"fill",
+          source:"searchRadius",
+
+          paint:{
+            "fill-color":"#ff2c98",
+            "fill-opacity":0.07
+          }
+        },
+
+        {
+          id:"search-radius-line",
+          type:"line",
+          source:"searchRadius",
+
+          paint:{
+            "line-color":"#ff2c98",
+            "line-width":2,
+            "line-opacity":0.85,
+            "line-dasharray":[
+              2,
+              2
+            ]
+          }
+        },
+
+        {
           id:"camera-heat",
           type:"heatmap",
           source:"cameras",
           "source-layer":"cameras",
           maxzoom:11,
 
-          paint: {
+          paint:{
 
-            "heatmap-weight":
-              1,
+            "heatmap-weight":1,
 
             "heatmap-intensity":[
               "interpolate",
@@ -892,73 +904,29 @@ const map =
         },
 
         {
-          id:"camera-glow",
-          type:"circle",
-          source:"cameras",
-          "source-layer":"cameras",
-          minzoom:10.5,
-
-          paint: {
-
-            "circle-radius":[
-              "interpolate",
-              ["linear"],
-              ["zoom"],
-              10.5,4,
-              14,9
-            ],
-
-            "circle-color":[
-              "case",
-              [
-                "match",
-                [
-                  "downcase",
-                  [
-                    "coalesce",
-                    ["get","brand"],
-                    ""
-                  ]
-                ],
-                [
-                  "flock",
-                  "flock safety"
-                ],
-                true,
-                false
-              ],
-              "#64ff8c",
-              "#ff2c98"
-            ],
-
-            "circle-opacity":
-              .22
-
-          }
-
-        },
-
-        {
           id:"camera-point",
           type:"circle",
           source:"cameras",
           "source-layer":"cameras",
           minzoom:10.5,
 
-          paint: {
+          paint:{
 
             "circle-radius":[
               "interpolate",
               ["linear"],
               ["zoom"],
-              10.5,2,
+              10.5,3,
               14,5
             ],
 
             "circle-color":[
+
               "case",
+
               [
                 "match",
+
                 [
                   "downcase",
                   [
@@ -967,22 +935,24 @@ const map =
                     ""
                   ]
                 ],
+
                 [
                   "flock",
                   "flock safety"
                 ],
+
                 true,
                 false
               ],
+
               "#64ff8c",
+
               "#ff2c98"
             ],
 
-            "circle-stroke-width":
-              1,
+            "circle-stroke-width":1,
 
-            "circle-stroke-color":
-              "#fff"
+            "circle-stroke-color":"#fff"
 
           }
 
@@ -997,9 +967,7 @@ const map =
 
 map.addControl(
 
-  new maplibregl.NavigationControl({
-    visualizePitch:true
-  }),
+  new maplibregl.NavigationControl(),
 
   "top-right"
 
@@ -1014,6 +982,12 @@ map.addControl(
 
 );
 
+
+/*
+============================================================
+DOM
+============================================================
+*/
 
 const input =
   document.getElementById(
@@ -1086,6 +1060,12 @@ const nearestList =
   );
 
 
+/*
+============================================================
+GEOCODE SEARCH
+============================================================
+*/
+
 async function geocodeLocation(
   query
 ) {
@@ -1118,12 +1098,7 @@ async function geocodeLocation(
 
   const response =
     await fetch(
-      url.toString(),
-      {
-        headers:{
-          Accept:"application/json"
-        }
-      }
+      url.toString()
     );
 
 
@@ -1138,12 +1113,12 @@ async function geocodeLocation(
   }
 
 
-  const results =
+  const data =
     await response.json();
 
 
   if (
-    !results.length
+    !data.length
   ) {
 
     throw new Error(
@@ -1153,10 +1128,206 @@ async function geocodeLocation(
   }
 
 
-  return results[0];
+  return data[0];
 
 }
 
+
+/*
+============================================================
+OVERPASS — ACTUAL RADIUS RESULTS
+============================================================
+*/
+
+async function fetchNearbyAlpr(
+  latitude,
+  longitude
+) {
+
+  /*
+    Query OpenStreetMap ALPR records directly
+    inside a true 5-mile radius.
+
+    We query nodes, ways and relations so the
+    count isn't limited to whatever vector tiles
+    happen to be loaded on the phone.
+  */
+
+  const query =
+    `
+      [out:json][timeout:25];
+
+      (
+        nwr
+        (around:${SEARCH_RADIUS_METERS},${latitude},${longitude})
+        ["surveillance:type"="ALPR"];
+      );
+
+      out center tags;
+    `;
+
+
+  const response =
+    await fetch(
+      OVERPASS_URL,
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/x-www-form-urlencoded"
+        },
+
+        body:
+          new URLSearchParams({
+            data:query
+          })
+      }
+    );
+
+
+  if (
+    !response.ok
+  ) {
+
+    throw new Error(
+      "Camera database search is temporarily unavailable."
+    );
+
+  }
+
+
+  const data =
+    await response.json();
+
+
+  return (
+    data.elements ||
+    []
+  )
+
+    .map(
+      element =>
+        normalizeOverpassElement(
+          element,
+          latitude,
+          longitude
+        )
+    )
+
+    .filter(
+      Boolean
+    )
+
+    .sort(
+      (
+        a,
+        b
+      ) =>
+        a.distance -
+        b.distance
+    );
+
+}
+
+
+/*
+============================================================
+NORMALIZE OSM CAMERA RECORD
+============================================================
+*/
+
+function normalizeOverpassElement(
+  element,
+  searchLat,
+  searchLon
+) {
+
+  const latitude =
+    element.lat ??
+    element.center?.lat;
+
+
+  const longitude =
+    element.lon ??
+    element.center?.lon;
+
+
+  if (
+    latitude === undefined ||
+    longitude === undefined
+  ) {
+
+    return null;
+
+  }
+
+
+  const tags =
+    element.tags ||
+    {};
+
+
+  const brand =
+    normalizeBrand(
+      tags.brand ||
+      tags.manufacturer ||
+      ""
+    );
+
+
+  const operator =
+    tags.operator ||
+    "Not documented";
+
+
+  const direction =
+    tags.direction ??
+    tags["camera:direction"] ??
+    "";
+
+
+  const distance =
+    milesBetween(
+      searchLat,
+      searchLon,
+      Number(latitude),
+      Number(longitude)
+    );
+
+
+  return {
+
+    osmType:
+      element.type,
+
+    osmId:
+      element.id,
+
+    latitude:
+      Number(latitude),
+
+    longitude:
+      Number(longitude),
+
+    brand,
+
+    operator,
+
+    direction,
+
+    distance
+
+  };
+
+}
+
+
+/*
+============================================================
+MAIN SEARCH
+============================================================
+*/
 
 async function searchLocation() {
 
@@ -1185,6 +1356,7 @@ async function searchLocation() {
   button.textContent =
     "SEARCHING...";
 
+
   statusBox.className =
     "status";
 
@@ -1194,31 +1366,32 @@ async function searchLocation() {
 
   try {
 
-    const result =
+    const location =
       await geocodeLocation(
         query
       );
 
 
-    const longitude =
-      Number(
-        result.lon
-      );
-
     const latitude =
       Number(
-        result.lat
+        location.lat
+      );
+
+
+    const longitude =
+      Number(
+        location.lon
       );
 
 
     searchCenter = {
-      longitude,
-      latitude
+      latitude,
+      longitude
     };
 
 
     locationName.textContent =
-      result.display_name
+      location.display_name
         .split(",")
         .slice(0,4)
         .join(",");
@@ -1232,33 +1405,37 @@ async function searchLocation() {
     );
 
 
-    map.flyTo({
+    updateSearchMap(
+      latitude,
+      longitude
+    );
 
-      center:[
-        longitude,
-        latitude
-      ],
 
-      zoom:12,
+    statusBox.className =
+      "status";
 
-      speed:1.35,
+    statusBox.textContent =
+      "Location found. Checking documented ALPR records within 5 miles...";
 
-      essential:true
 
-    });
+    currentResults =
+      await fetchNearbyAlpr(
+        latitude,
+        longitude
+      );
+
+
+    renderResults(
+      currentResults
+    );
 
 
     statusBox.className =
       "status good";
 
+
     statusBox.textContent =
-      "Location found. Loading documented cameras nearby...";
-
-
-    window.setTimeout(
-      refreshNearbyResults,
-      1600
-    );
+      `${currentResults.length} documented ALPR camera location${currentResults.length === 1 ? "" : "s"} found within 5 miles.`;
 
   }
 
@@ -1271,7 +1448,7 @@ async function searchLocation() {
 
     statusBox.textContent =
       error.message ||
-      "Search failed. Try another location.";
+      "Search failed. Try again.";
 
   }
 
@@ -1288,236 +1465,132 @@ async function searchLocation() {
 }
 
 
-function resetResults() {
+/*
+============================================================
+MAP SEARCH LOCATION + RADIUS
+============================================================
+*/
 
-  count1.textContent =
-    "…";
-
-  count3.textContent =
-    "…";
-
-  count5.textContent =
-    "…";
-
-  flockCount.textContent =
-    "…";
-
-  motorolaCount.textContent =
-    "…";
-
-  genetecCount.textContent =
-    "…";
-
-  otherCount.textContent =
-    "…";
-
-  nearest.classList.remove(
-    "visible"
-  );
-
-}
-
-
-function refreshNearbyResults() {
-
-  if (
-    !searchCenter
-  ) {
-
-    return;
-
-  }
-
-
-  if (
-    !map.isSourceLoaded(
-      "cameras"
-    )
-  ) {
-
-    statusBox.className =
-      "status";
-
-    statusBox.textContent =
-      "Camera data is still loading...";
-
-    window.setTimeout(
-      refreshNearbyResults,
-      800
-    );
-
-    return;
-
-  }
-
-
-  let features = [];
-
-
-  try {
-
-    features =
-      map.querySourceFeatures(
-        "cameras",
-        {
-          sourceLayer:
-            "cameras"
-        }
-      );
-
-  }
-
-  catch (
-    error
-  ) {
-
-    console.error(
-      error
-    );
-
-    return;
-
-  }
-
-
-  const cameras =
-    dedupeFeatures(
-      features
-    )
-
-      .map(
-        feature =>
-          featureToCamera(
-            feature
-          )
-      )
-
-      .filter(
-        Boolean
-      )
-
-      .filter(
-        camera =>
-          camera.distance <= 5
-      )
-
-      .sort(
-        (
-          a,
-          b
-        ) =>
-          a.distance -
-          b.distance
-      );
-
-
-  renderCounts(
-    cameras
-  );
-
-
-  renderNearest(
-    cameras
-  );
-
-
-  statusBox.className =
-    "status good";
-
-
-  if (
-    cameras.length
-  ) {
-
-    statusBox.textContent =
-      `${cameras.length} documented ALPR camera location${cameras.length === 1 ? "" : "s"} found within 5 miles.`;
-
-  }
-
-  else {
-
-    statusBox.textContent =
-      "No documented ALPR camera locations were found within 5 miles in the currently loaded public dataset.";
-
-  }
-
-}
-
-
-function featureToCamera(
-  feature
+function updateSearchMap(
+  latitude,
+  longitude
 ) {
 
-  const coords =
-    feature.geometry
-      ?.coordinates;
-
-
   if (
-    !coords ||
-    coords.length < 2
+    searchMarker
   ) {
 
-    return null;
+    searchMarker.remove();
 
   }
 
 
-  const longitude =
-    Number(
-      coords[0]
-    );
-
-  const latitude =
-    Number(
-      coords[1]
+  const markerElement =
+    document.createElement(
+      "div"
     );
 
 
-  const props =
-    feature.properties ||
-    {};
+  markerElement.style.width =
+    "20px";
+
+  markerElement.style.height =
+    "20px";
+
+  markerElement.style.borderRadius =
+    "50%";
+
+  markerElement.style.background =
+    "#ffffff";
+
+  markerElement.style.border =
+    "4px solid #070707";
+
+  markerElement.style.boxShadow =
+    "0 0 0 3px #ff2c98";
 
 
-  return {
+  searchMarker =
+    new maplibregl.Marker({
+      element:
+        markerElement
+    })
 
-    feature,
+      .setLngLat(
+        [
+          longitude,
+          latitude
+        ]
+      )
 
-    longitude,
+      .setPopup(
 
-    latitude,
+        new maplibregl.Popup({
+          offset:18
+        })
 
-    distance:
-      milesBetween(
+          .setHTML(
+            `
+              <div class="popup-title">
+                👀 SEARCH LOCATION
+              </div>
 
-        searchCenter.latitude,
+              <div class="popup-row">
+                Five-mile camera search is centered here.
+              </div>
+            `
+          )
 
-        searchCenter.longitude,
+      )
 
-        latitude,
+      .addTo(
+        map
+      );
 
-        longitude
 
-      ),
+  const radiusGeoJson =
+    createCircle(
+      longitude,
+      latitude,
+      SEARCH_RADIUS_MILES
+    );
 
-    brand:
-      normalizeBrand(
-        props.brand
-      ),
 
-    operator:
-      props.operator ||
-      "Not documented",
+  map.getSource(
+    "searchRadius"
+  )
 
-    direction:
-      props.direction
+    .setData(
+      radiusGeoJson
+    );
 
-  };
+
+  const bounds =
+    radiusBounds(
+      latitude,
+      longitude,
+      SEARCH_RADIUS_MILES
+    );
+
+
+  map.fitBounds(
+    bounds,
+    {
+      padding:35,
+      duration:1000
+    }
+  );
 
 }
 
 
-function renderCounts(
+/*
+============================================================
+RENDER RESULTS
+============================================================
+*/
+
+function renderResults(
   cameras
 ) {
 
@@ -1564,10 +1637,13 @@ function renderCounts(
 
 
   const other =
-    within5 -
-    flock -
-    motorola -
-    genetec;
+    Math.max(
+      0,
+      within5 -
+      flock -
+      motorola -
+      genetec
+    );
 
 
   count1.textContent =
@@ -1589,13 +1665,21 @@ function renderCounts(
     genetec;
 
   otherCount.textContent =
-    Math.max(
-      0,
-      other
-    );
+    other;
+
+
+  renderNearest(
+    cameras
+  );
 
 }
 
+
+/*
+============================================================
+NEAREST RECORDS
+============================================================
+*/
 
 function renderNearest(
   cameras
@@ -1621,7 +1705,7 @@ function renderNearest(
   cameras
     .slice(
       0,
-      5
+      8
     )
 
     .forEach(
@@ -1641,6 +1725,10 @@ function renderNearest(
           directionLabel(
             camera.direction
           );
+
+
+        const osmUrl =
+          `https://www.openstreetmap.org/${camera.osmType}/${camera.osmId}`;
 
 
         item.innerHTML =
@@ -1664,6 +1752,17 @@ function renderNearest(
                 Operator:
                 ${escapeHtml(camera.operator)}
 
+                <br>
+
+                <a
+                  class="source-link"
+                  href="${escapeHtml(osmUrl)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  VIEW PUBLIC SOURCE ↗
+                </a>
+
               </div>
 
             </div>
@@ -1676,7 +1775,22 @@ function renderNearest(
 
         item.addEventListener(
           "click",
-          () => {
+          event => {
+
+            /*
+              Don't hijack the source link tap.
+            */
+
+            if (
+              event.target.closest(
+                "a"
+              )
+            ) {
+
+              return;
+
+            }
+
 
             map.flyTo({
 
@@ -1685,13 +1799,39 @@ function renderNearest(
                 camera.latitude
               ],
 
-              zoom:15,
+              zoom:16,
 
-              speed:1.4,
+              speed:1.35,
 
               essential:true
 
             });
+
+
+            new maplibregl.Popup({
+
+              closeButton:true,
+
+              maxWidth:"300px"
+
+            })
+
+              .setLngLat(
+                [
+                  camera.longitude,
+                  camera.latitude
+                ]
+              )
+
+              .setHTML(
+                cameraPopupHtml(
+                  camera
+                )
+              )
+
+              .addTo(
+                map
+              );
 
           }
         );
@@ -1712,13 +1852,185 @@ function renderNearest(
 }
 
 
+/*
+============================================================
+VECTOR MAP POPUPS
+============================================================
+*/
+
+map.on(
+  "click",
+  "camera-point",
+  event => {
+
+    const feature =
+      event.features?.[0];
+
+
+    if (
+      !feature
+    ) {
+
+      return;
+
+    }
+
+
+    const props =
+      feature.properties ||
+      {};
+
+
+    const coords =
+      feature.geometry
+        .coordinates;
+
+
+    const brand =
+      normalizeBrand(
+        props.brand
+      );
+
+
+    const direction =
+      directionLabel(
+        props.direction
+      ) ||
+      "Not documented";
+
+
+    const operator =
+      props.operator ||
+      "Not documented";
+
+
+    let distanceText =
+      "";
+
+
+    if (
+      searchCenter
+    ) {
+
+      distanceText =
+        formatDistance(
+
+          milesBetween(
+
+            searchCenter.latitude,
+
+            searchCenter.longitude,
+
+            coords[1],
+
+            coords[0]
+
+          )
+
+        );
+
+    }
+
+
+    const html =
+      `
+        <div class="popup-title">
+          👀 CAMERA SPOTTED
+        </div>
+
+        <div class="popup-row">
+          <strong>Brand:</strong>
+          ${escapeHtml(brand)}
+        </div>
+
+        <div class="popup-row">
+          <strong>Operator:</strong>
+          ${escapeHtml(operator)}
+        </div>
+
+        <div class="popup-row">
+          <strong>Facing:</strong>
+          ${escapeHtml(direction)}
+        </div>
+
+        ${
+          distanceText
+            ? `
+              <div class="popup-row">
+                <strong>Distance:</strong>
+                ${escapeHtml(distanceText)}
+              </div>
+            `
+            : ""
+        }
+      `;
+
+
+    new maplibregl.Popup({
+      closeButton:true,
+      maxWidth:"300px"
+    })
+
+      .setLngLat(
+        coords
+      )
+
+      .setHTML(
+        html
+      )
+
+      .addTo(
+        map
+      );
+
+  }
+);
+
+
+/*
+============================================================
+HELPERS
+============================================================
+*/
+
+function resetResults() {
+
+  count1.textContent =
+    "…";
+
+  count3.textContent =
+    "…";
+
+  count5.textContent =
+    "…";
+
+  flockCount.textContent =
+    "…";
+
+  motorolaCount.textContent =
+    "…";
+
+  genetecCount.textContent =
+    "…";
+
+  otherCount.textContent =
+    "…";
+
+  nearest.classList.remove(
+    "visible"
+  );
+
+}
+
+
 function normalizeBrand(
   brand
 ) {
 
   const value =
     String(
-      brand || ""
+      brand ||
+      ""
     ).trim();
 
 
@@ -1763,16 +2075,10 @@ function normalizeBrand(
   }
 
 
-  if (
-    value
-  ) {
-
-    return value;
-
-  }
-
-
-  return "Unknown / undocumented";
+  return (
+    value ||
+    "Unknown / undocumented"
+  );
 
 }
 
@@ -1792,26 +2098,22 @@ function directionLabel(
   }
 
 
-  const raw =
-    String(
-      direction
-    )
-      .replace(
-        "°",
-        ""
-      )
-      .trim();
-
-
-  const degrees =
+  const number =
     Number(
-      raw
+      String(
+        direction
+      )
+        .replace(
+          "°",
+          ""
+        )
+        .trim()
     );
 
 
   if (
     Number.isNaN(
-      degrees
+      number
     )
   ) {
 
@@ -1822,10 +2124,10 @@ function directionLabel(
   }
 
 
-  const normalized =
+  const degrees =
     (
       (
-        degrees %
+        number %
         360
       ) +
       360
@@ -1856,103 +2158,15 @@ function directionLabel(
 
   const index =
     Math.round(
-      normalized /
+      degrees /
       22.5
     ) %
     16;
 
 
   return (
-    `${Math.round(normalized)}° (${compass[index]})`
+    `${Math.round(degrees)}° (${compass[index]})`
   );
-
-}
-
-
-function dedupeFeatures(
-  features
-) {
-
-  const seen =
-    new Set();
-
-  const output =
-    [];
-
-
-  for (
-    const feature
-    of features
-  ) {
-
-    const coords =
-      feature.geometry
-        ?.coordinates;
-
-
-    if (
-      !coords
-    ) {
-
-      continue;
-
-    }
-
-
-    const props =
-      feature.properties ||
-      {};
-
-
-    const key =
-      [
-        props.id ||
-        props.osm_id ||
-        props.node ||
-        "",
-
-        Number(
-          coords[0]
-        ).toFixed(6),
-
-        Number(
-          coords[1]
-        ).toFixed(6),
-
-        props.brand ||
-        "",
-
-        props.direction ||
-        ""
-
-      ].join(
-        "|"
-      );
-
-
-    if (
-      seen.has(
-        key
-      )
-    ) {
-
-      continue;
-
-    }
-
-
-    seen.add(
-      key
-    );
-
-    output.push(
-      feature
-    );
-
-  }
-
-
-  return output;
 
 }
 
@@ -2011,7 +2225,10 @@ function milesBetween(
     2 *
     Math.atan2(
       Math.sqrt(a),
-      Math.sqrt(1-a)
+      Math.sqrt(
+        1 -
+        a
+      )
     )
   );
 
@@ -2036,7 +2253,8 @@ function formatDistance(
 ) {
 
   if (
-    miles < .1
+    miles <
+    .1
   ) {
 
     return (
@@ -2053,209 +2271,254 @@ function formatDistance(
 }
 
 
-button.addEventListener(
-  "click",
-  searchLocation
-);
+function radiusBounds(
+  latitude,
+  longitude,
+  miles
+) {
+
+  const latDelta =
+    miles /
+    69;
 
 
-input.addEventListener(
-  "keydown",
-  event => {
-
-    if (
-      event.key ===
-      "Enter"
-    ) {
-
-      searchLocation();
-
-    }
-
-  }
-);
-
-
-map.on(
-  "moveend",
-  () => {
-
-    if (
-      !searchCenter
-    ) {
-
-      return;
-
-    }
-
-
-    window.clearTimeout(
-      refreshTimer
+  const lonDelta =
+    miles /
+    (
+      69 *
+      Math.cos(
+        radians(
+          latitude
+        )
+      )
     );
 
 
-    refreshTimer =
-      window.setTimeout(
-        refreshNearbyResults,
-        450
+  return [
+
+    [
+      longitude -
+      lonDelta,
+
+      latitude -
+      latDelta
+    ],
+
+    [
+      longitude +
+      lonDelta,
+
+      latitude +
+      latDelta
+    ]
+
+  ];
+
+}
+
+
+function createCircle(
+  longitude,
+  latitude,
+  radiusMiles
+) {
+
+  const points =
+    96;
+
+
+  const coordinates =
+    [];
+
+
+  const earthRadiusMiles =
+    3958.7613;
+
+
+  const angularDistance =
+    radiusMiles /
+    earthRadiusMiles;
+
+
+  const lat1 =
+    radians(
+      latitude
+    );
+
+
+  const lon1 =
+    radians(
+      longitude
+    );
+
+
+  for (
+    let i =
+      0;
+
+    i <=
+      points;
+
+    i++
+  ) {
+
+    const bearing =
+      (
+        i /
+        points
+      ) *
+      Math.PI *
+      2;
+
+
+    const lat2 =
+      Math.asin(
+
+        Math.sin(
+          lat1
+        ) *
+
+        Math.cos(
+          angularDistance
+        ) +
+
+        Math.cos(
+          lat1
+        ) *
+
+        Math.sin(
+          angularDistance
+        ) *
+
+        Math.cos(
+          bearing
+        )
+
       );
 
-  }
-);
 
+    const lon2 =
+      lon1 +
 
-map.on(
-  "mouseenter",
-  "camera-point",
-  () => {
+      Math.atan2(
 
-    map.getCanvas().style.cursor =
-      "pointer";
+        Math.sin(
+          bearing
+        ) *
 
-  }
-);
+        Math.sin(
+          angularDistance
+        ) *
 
+        Math.cos(
+          lat1
+        ),
 
-map.on(
-  "mouseleave",
-  "camera-point",
-  () => {
+        Math.cos(
+          angularDistance
+        ) -
 
-    map.getCanvas().style.cursor =
-      "";
+        Math.sin(
+          lat1
+        ) *
 
-  }
-);
+        Math.sin(
+          lat2
+        )
 
-
-map.on(
-  "click",
-  "camera-point",
-  event => {
-
-    const feature =
-      event.features?.[0];
-
-
-    if (
-      !feature
-    ) {
-
-      return;
-
-    }
-
-
-    const props =
-      feature.properties ||
-      {};
-
-
-    const coordinates =
-      feature.geometry
-        .coordinates
-        .slice();
-
-
-    const brand =
-      normalizeBrand(
-        props.brand
       );
 
 
-    const operator =
-      props.operator ||
-      "Not documented";
+    coordinates.push(
+      [
+        lon2 *
+        180 /
+        Math.PI,
+
+        lat2 *
+        180 /
+        Math.PI
+      ]
+    );
+
+  }
 
 
-    const direction =
-      directionLabel(
-        props.direction
-      ) ||
-      "Not documented";
+  return {
 
+    type:"Feature",
 
-    let distanceLine =
-      "";
+    properties:{
+      radiusMiles
+    },
 
-
-    if (
-      searchCenter
-    ) {
-
-      const distance =
-        milesBetween(
-
-          searchCenter.latitude,
-
-          searchCenter.longitude,
-
-          Number(
-            coordinates[1]
-          ),
-
-          Number(
-            coordinates[0]
-          )
-
-        );
-
-
-      distanceLine =
-        `
-          <div class="popup-row">
-            <strong>Distance:</strong>
-            ${escapeHtml(formatDistance(distance))}
-          </div>
-        `;
-
-    }
-
-
-    const html =
-      `
-        <div class="popup-title">
-          👀 CAMERA SPOTTED
-        </div>
-
-        <div class="popup-row">
-          <strong>Brand:</strong>
-          ${escapeHtml(brand)}
-        </div>
-
-        <div class="popup-row">
-          <strong>Operator:</strong>
-          ${escapeHtml(operator)}
-        </div>
-
-        <div class="popup-row">
-          <strong>Facing:</strong>
-          ${escapeHtml(direction)}
-        </div>
-
-        ${distanceLine}
-      `;
-
-
-    new maplibregl.Popup({
-      closeButton:true,
-      maxWidth:"300px"
-    })
-
-      .setLngLat(
+    geometry:{
+      type:"Polygon",
+      coordinates:[
         coordinates
-      )
+      ]
+    }
 
-      .setHTML(
-        html
-      )
+  };
 
-      .addTo(
-        map
-      );
+}
 
-  }
-);
+
+function cameraPopupHtml(
+  camera
+) {
+
+  const direction =
+    directionLabel(
+      camera.direction
+    ) ||
+    "Not documented";
+
+
+  const osmUrl =
+    `https://www.openstreetmap.org/${camera.osmType}/${camera.osmId}`;
+
+
+  return (
+    `
+      <div class="popup-title">
+        👀 CAMERA SPOTTED
+      </div>
+
+      <div class="popup-row">
+        <strong>Brand:</strong>
+        ${escapeHtml(camera.brand)}
+      </div>
+
+      <div class="popup-row">
+        <strong>Operator:</strong>
+        ${escapeHtml(camera.operator)}
+      </div>
+
+      <div class="popup-row">
+        <strong>Facing:</strong>
+        ${escapeHtml(direction)}
+      </div>
+
+      <div class="popup-row">
+        <strong>Distance:</strong>
+        ${escapeHtml(formatDistance(camera.distance))}
+      </div>
+
+      <div class="popup-row">
+        <a
+          class="source-link"
+          href="${escapeHtml(osmUrl)}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          VIEW PUBLIC SOURCE ↗
+        </a>
+      </div>
+    `
+  );
+
+}
 
 
 function escapeHtml(
@@ -2292,6 +2555,59 @@ function escapeHtml(
     );
 
 }
+
+
+/*
+============================================================
+EVENTS
+============================================================
+*/
+
+button.addEventListener(
+  "click",
+  searchLocation
+);
+
+
+input.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key ===
+      "Enter"
+    ) {
+
+      searchLocation();
+
+    }
+
+  }
+);
+
+
+map.on(
+  "mouseenter",
+  "camera-point",
+  () => {
+
+    map.getCanvas().style.cursor =
+      "pointer";
+
+  }
+);
+
+
+map.on(
+  "mouseleave",
+  "camera-point",
+  () => {
+
+    map.getCanvas().style.cursor =
+      "";
+
+  }
+);
 
 </script>
 
