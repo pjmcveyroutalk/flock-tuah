@@ -1,0 +1,36 @@
+name: CLC Linux protoc ferry
+
+on:
+  push:
+    branches:
+      - clc-v70-r3-toolchain-ferry-20260917
+    paths:
+      - '.clc-ferry/protoc.trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  package-protoc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Download pinned protoc
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p work ferry
+          curl -fL --retry 5 --retry-all-errors             https://github.com/protocolbuffers/protobuf/releases/download/v21.12/protoc-21.12-linux-x86_64.zip             -o work/protoc.zip
+          unzip -q work/protoc.zip -d work/protoc
+          install -m 0755 work/protoc/bin/protoc ferry/protoc
+          ferry/protoc --version | tee ferry/VERSION.txt
+          sha256sum ferry/protoc > ferry/SHA256SUMS
+
+      - name: Upload protoc
+        uses: actions/upload-artifact@v4
+        with:
+          name: clc-linux-protoc-21.12
+          path: ferry/
+          retention-days: 1
+          if-no-files-found: error
+          compression-level: 0
