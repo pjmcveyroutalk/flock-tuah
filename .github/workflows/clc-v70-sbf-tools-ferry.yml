@@ -1,0 +1,41 @@
+name: CLC v70 pinned SBF tool ferry
+
+on:
+  push:
+    branches:
+      - clc-v70-r3-toolchain-ferry-20260917
+    paths:
+      - '.clc-ferry/sbf.trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  package-sbf-tools:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Download pinned public Agave and platform-tools archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ferry
+          AGAVE=ferry/agave-v2.0.25-release.tar.bz2
+          PLATFORM=ferry/platform-tools-v1.47.tar.bz2
+          curl -fL --retry 5 --retry-all-errors             https://github.com/anza-xyz/agave/releases/download/v2.0.25/solana-release-x86_64-unknown-linux-gnu.tar.bz2             -o "$AGAVE"
+          curl -fL --retry 5 --retry-all-errors             https://github.com/anza-xyz/platform-tools/releases/download/v1.47/platform-tools-linux-x86_64.tar.bz2             -o "$PLATFORM"
+          test "$(stat -c %s "$AGAVE")" = "321422935"
+          test "$(stat -c %s "$PLATFORM")" = "515947148"
+          printf '%s  %s\n' 3ad595c2a2fe272ee5e45bcd7a188bc1e9cacc5438c5da819bd0f00e21decaa7 "$AGAVE" | sha256sum -c --strict -
+          printf '%s  %s\n' 44465e4c64bb1a38498bb64b52a07329756e4a44d351c90b50d4bc3d1c78f7bf "$PLATFORM" | sha256sum -c --strict -
+          sha256sum "$AGAVE" "$PLATFORM" > ferry/SHA256SUMS
+          ls -lh "$AGAVE" "$PLATFORM"
+
+      - name: Upload pinned SBF tool archives
+        uses: actions/upload-artifact@v4
+        with:
+          name: clc-v70-pinned-agave-2.0.25-platform-tools-v1.47
+          path: ferry/
+          retention-days: 1
+          if-no-files-found: error
+          compression-level: 0
