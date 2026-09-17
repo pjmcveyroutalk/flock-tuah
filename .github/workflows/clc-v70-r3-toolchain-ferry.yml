@@ -1,0 +1,56 @@
+name: CLC v70 r3 Linux toolchain ferry
+
+on:
+  push:
+    branches:
+      - clc-v70-r3-toolchain-ferry-20260917
+    paths:
+      - '.github/workflows/clc-v70-r3-toolchain-ferry.yml'
+      - '.clc-ferry/trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  package-rust-180:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Install exact Rust 1.80.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          rustup toolchain install 1.80.0 --profile minimal --component rustfmt --component clippy
+          rustc +1.80.0 --version --verbose
+          cargo +1.80.0 --version
+          cargo +1.80.0 fmt --version
+          cargo +1.80.0 clippy --version
+
+      - name: Package exact installed toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$HOME/.rustup/toolchains/1.80.0-x86_64-unknown-linux-gnu"
+          test -x "$root/bin/rustc"
+          test -x "$root/bin/cargo"
+          test -x "$root/bin/rustfmt"
+          test -x "$root/bin/cargo-clippy"
+          mkdir -p ferry
+          cp "$HOME/.cargo/bin/rustup" ferry/rustup
+          chmod 0755 ferry/rustup
+          tar -C "$HOME/.rustup/toolchains" -cJf ferry/rust-1.80.0-x86_64-unknown-linux-gnu.tar.xz 1.80.0-x86_64-unknown-linux-gnu
+          sha256sum ferry/rustup ferry/rust-1.80.0-x86_64-unknown-linux-gnu.tar.xz > ferry/SHA256SUMS
+          {
+            rustc +1.80.0 --version --verbose
+            cargo +1.80.0 --version
+            cargo +1.80.0 fmt --version
+            cargo +1.80.0 clippy --version
+          } > ferry/VERSIONS.txt
+
+      - name: Upload exact toolchain
+        uses: actions/upload-artifact@v4
+        with:
+          name: clc-v70-r3-rust-1.80.0-linux-x86_64
+          path: ferry/
+          retention-days: 1
+          if-no-files-found: error
