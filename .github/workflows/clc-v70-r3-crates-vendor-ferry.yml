@@ -1,0 +1,115 @@
+name: CLC v70 r3 crates vendor ferry
+
+on:
+  push:
+    branches:
+      - clc-v70-r3-toolchain-ferry-20260917
+    paths:
+      - '.clc-ferry/vendor.trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  package-vendor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Download and vendor public crates
+        shell: bash
+        env:
+          INVENTORY_B64: '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'
+        run: |
+          set -euo pipefail
+          mkdir -p ferry vendor
+          python3 - <<'PY'
+          import base64, gzip, hashlib, io, json, os, pathlib, tarfile, time, urllib.parse, urllib.request
+          rows = []
+          raw = gzip.decompress(base64.b64decode(os.environ["INVENTORY_B64"])).decode()
+          for line in raw.splitlines():
+              if not line:
+                  continue
+              name, version = line.split("\t", 1)
+              rows.append((name, version))
+          if len(rows) != 558 or len(set(rows)) != 558:
+              raise SystemExit(f"unexpected inventory count: {len(rows)} / unique {len(set(rows))}")
+          vendor = pathlib.Path("vendor")
+          archive_hashes = []
+          opener = urllib.request.build_opener()
+          opener.addheaders = [("User-Agent", "cargo-vendor-ferry/1.0")]
+          for idx, (name, version) in enumerate(rows, 1):
+              n = urllib.parse.quote(name, safe="")
+              fn = urllib.parse.quote(f"{name}-{version}.crate", safe="")
+              url = f"https://static.crates.io/crates/{n}/{fn}"
+              data = None
+              for attempt in range(6):
+                  try:
+                      with opener.open(url, timeout=120) as resp:
+                          data = resp.read()
+                      break
+                  except Exception as exc:
+                      if attempt == 5:
+                          raise
+                      time.sleep(2 ** attempt)
+              package_hash = hashlib.sha256(data).hexdigest()
+              dest = vendor / f"{name}-{version}"
+              dest.mkdir(parents=True, exist_ok=False)
+              with tarfile.open(fileobj=io.BytesIO(data), mode="r:gz") as tf:
+                  members = tf.getmembers()
+                  prefix = f"{name}-{version}/"
+                  for m in members:
+                      if m.issym() or m.islnk():
+                          raise SystemExit(f"link forbidden in crate {name} {version}: {m.name}")
+                      if not m.name.startswith(prefix):
+                          raise SystemExit(f"unexpected archive path in {name} {version}: {m.name}")
+                      rel = pathlib.PurePosixPath(m.name[len(prefix):])
+                      if not rel.parts:
+                          continue
+                      if rel.is_absolute() or ".." in rel.parts:
+                          raise SystemExit(f"unsafe archive path: {m.name}")
+                      target = dest.joinpath(*rel.parts)
+                      if m.isdir():
+                          target.mkdir(parents=True, exist_ok=True)
+                      elif m.isfile():
+                          target.parent.mkdir(parents=True, exist_ok=True)
+                          src = tf.extractfile(m)
+                          target.write_bytes(src.read())
+                      else:
+                          raise SystemExit(f"unsupported archive entry: {m.name}")
+              files = {}
+              for p in sorted(dest.rglob("*")):
+                  if p.is_file():
+                      rel = p.relative_to(dest).as_posix()
+                      files[rel] = hashlib.sha256(p.read_bytes()).hexdigest()
+              (dest / ".cargo-checksum.json").write_text(
+                  json.dumps({"files": files, "package": package_hash}, separators=(",", ":"), sort_keys=True) + "\n"
+              )
+              archive_hashes.append((name, version, package_hash, len(data)))
+              if idx % 50 == 0 or idx == len(rows):
+                  print(f"downloaded {idx}/{len(rows)} crates", flush=True)
+          pathlib.Path("ferry/ARCHIVE_SHA256.tsv").write_text(
+              "".join(f"{n}\t{v}\t{h}\t{s}\n" for n,v,h,s in archive_hashes)
+          )
+          pathlib.Path("ferry/INVENTORY_SHA256.txt").write_text(
+              hashlib.sha256(raw.encode()).hexdigest() + "  crates-inventory.tsv\n"
+          )
+          print("PASS: downloaded and checksummed 558 public crates")
+          PY
+
+      - name: Package vendored source
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar -czf ferry/clc-v70-r3-crates-vendor.tar.gz vendor
+          sha256sum ferry/clc-v70-r3-crates-vendor.tar.gz >> ferry/SHA256SUMS
+          sha256sum ferry/ARCHIVE_SHA256.tsv >> ferry/SHA256SUMS
+          du -sh vendor ferry/clc-v70-r3-crates-vendor.tar.gz
+
+      - name: Upload vendored crates
+        uses: actions/upload-artifact@v4
+        with:
+          name: clc-v70-r3-crates-vendor-linux
+          path: ferry/
+          retention-days: 1
+          if-no-files-found: error
+          compression-level: 0
